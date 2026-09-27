@@ -6,7 +6,9 @@ import { Marquee } from "../components/home/Marquee";
 import { ReferencesSection } from "../components/home/ReferencesSection";
 import { StackSection } from "../components/home/StackSection";
 import { WorkSection } from "../components/home/WorkSection";
+import { JsonLd } from "../components/JsonLd";
 import { profile } from "../content/profile";
+import { homeStructuredData } from "../lib/structuredData";
 import { fetchExperiences, fetchStack } from "../services/career";
 import { fetchProjects } from "../services/projects";
 import styles from "./home.module.css";
@@ -20,6 +22,7 @@ export default async function HomePage() {
 
   return (
     <div className={styles.home}>
+      <JsonLd data={homeStructuredData()} />
       <Hero />
       <Marquee items={profile.marquee} />
       <div className="container">

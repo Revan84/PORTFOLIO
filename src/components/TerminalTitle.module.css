@@ -4,15 +4,27 @@
   letter-spacing: -0.055em;
 }
 
-.tag {
-  display: block;
-  margin: 0 0 1.1rem 0.5em;
+/* The fake markup around the title. "/ """ gives the generated text an empty alternative,
+   so screen readers skip it; search engines ignore generated content. */
+.title::before,
+.closingLine::after {
   font-family: var(--font-mono);
   font-size: 14px;
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0;
   color: var(--color-neutral-500);
+}
+
+.title::before {
+  content: attr(data-open-tag) / "";
+  display: block;
+  margin: 0 0 1.1rem 0.5em;
+}
+
+.closingLine::after {
+  content: attr(data-close-tag) / "";
+  margin-left: 0.9em;
 }
 
 .line {
@@ -46,12 +58,8 @@
   box-shadow: 0 0 18px var(--color-accent);
 }
 
-.closingTag {
-  margin: 0 0 0 0.9em;
-}
-
 @media (max-width: 760px) {
-  .closingTag {
+  .closingLine::after {
     display: none;
   }
 }

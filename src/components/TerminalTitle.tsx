@@ -12,23 +12,19 @@ interface TerminalTitleProps {
 }
 
 // An h1 dressed as source code: `<h1 class="...">`, the words, a blinking caret, `</h1>`.
+// The fake tags are CSS generated content, so the heading text is just the words, for
+// search engines and screen readers alike.
 export function TerminalTitle({ id, lead, last, tag, className }: TerminalTitleProps) {
   return (
-    <h1 id={id} className={`${styles.title} ${className ?? ""}`}>
-      <span className={styles.tag} aria-hidden="true">
-        {`<${tag}>`}
-      </span>
+    <h1 id={id} className={`${styles.title} ${className ?? ""}`} data-open-tag={`<${tag}>`}>
       {lead !== "" && (
         <>
           <ScrambleText text={lead} delay={120} className={`${styles.line} ${styles.word}`} lens />{" "}
         </>
       )}
-      <span className={styles.line}>
+      <span className={`${styles.line} ${styles.closingLine}`} data-close-tag={`</${tag.split(" ")[0]}>`}>
         <ScrambleText text={last} delay={420} className={`${styles.word} ${styles.fade}`} lens />
         <span className={`caret ${styles.caret}`} aria-hidden="true" />
-        <span className={`${styles.tag} ${styles.closingTag}`} aria-hidden="true">
-          {`</${tag.split(" ")[0]}>`}
-        </span>
       </span>
     </h1>
   );

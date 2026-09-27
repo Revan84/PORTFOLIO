@@ -3,7 +3,7 @@ export const site = {
   name: "Quentin Euillot",
   title: "Quentin Euillot · Full-stack developer",
   description:
-    "I build web and mobile products end to end: the interface, the API, and the servers underneath. Former avionics technician, now full-stack, based in Montpellier.",
-  // Served from public/ once the file is there; the header button appears on its own.
+    "Quentin Euillot, full-stack developer in Montpellier, France. I build web and mobile products end to end: the interface, the API, and the servers underneath.",
+  // Served from public/; the header button appears from the next build (see next.config.ts).
   cvPath: "/cv.pdf",
 } as const;

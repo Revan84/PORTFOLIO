@@ -80,13 +80,23 @@ export function ScrambleText({ text, delay = 0, className, lens = false }: Scram
     run();
   };
 
+  // Until the effect starts (the server HTML, reduced motion), the word is written once:
+  // search engines read the text itself, and ignore aria-hidden duplicates only for screen readers.
+  if (frame === null) {
+    return (
+      <span className={className} data-cursor={lens ? "lens" : undefined}>
+        {text}
+      </span>
+    );
+  }
+
   return (
     <span className={className} data-cursor={lens ? "lens" : undefined}>
       <span className="visually-hidden">{text}</span>
       <span aria-hidden="true">
         {letters.map((letter, index) => {
-          const settled = frame === null || frame.now > frame.settleAt[index];
-          const started = frame !== null && frame.now > delay + index * START_STAGGER_MS;
+          const settled = frame.now > frame.settleAt[index];
+          const started = frame.now > delay + index * START_STAGGER_MS;
           return (
             <span key={index} className={styles.letter} onMouseEnter={() => rescramble(index)}>
               <span className={settled ? undefined : styles.hidden}>{letter}</span>
