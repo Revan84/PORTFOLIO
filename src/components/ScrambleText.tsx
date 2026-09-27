@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { BOOTED_EVENT, isBooting } from "./boot/bootFlag";
 import styles from "./ScrambleText.module.css";
 
 const GLYPHS = "01<>/{}=+*#$%&?!";
@@ -56,10 +57,16 @@ export function ScrambleText({ text, delay = 0, className }: ScrambleTextProps) 
 
   useEffect(() => {
     if (reducedMotion) return;
-    originRef.current = performance.now();
-    settleRef.current = Array.from({ length: count }, (_, index) => delay + SETTLE_MS + index * STAGGER_MS);
-    run();
+    const start = () => {
+      originRef.current = performance.now();
+      settleRef.current = Array.from({ length: count }, (_, index) => delay + SETTLE_MS + index * STAGGER_MS);
+      run();
+    };
+    // Behind the boot screen the effect would play unseen: wait for it to leave.
+    if (isBooting()) window.addEventListener(BOOTED_EVENT, start, { once: true });
+    else start();
     return () => {
+      window.removeEventListener(BOOTED_EVENT, start);
       if (timerRef.current !== null) clearInterval(timerRef.current);
       timerRef.current = null;
     };
