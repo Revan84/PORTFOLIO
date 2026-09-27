@@ -1,0 +1,35 @@
+.list {
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-neutral-400);
+  white-space: nowrap;
+}
+
+.link:hover,
+.link[aria-current="page"] {
+  color: var(--color-accent);
+}
+
+.index {
+  color: var(--color-accent);
+}
+
+@media (max-width: 760px) {
+  .nav {
+    order: 1;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .list {
+    gap: 16px;
+  }
+}

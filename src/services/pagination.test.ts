@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 import { articlesHref, countPages, readTotal } from "./pagination";
 
 describe("articlesHref", () => {
-  it("keeps the home URL clean on the first page", () => {
-    expect(articlesHref("", 1)).toBe("/");
+  it("keeps the articles URL clean on the first page", () => {
+    expect(articlesHref("", 1)).toBe("/articles");
   });
 
   it("encodes the search and the page", () => {
-    expect(articlesHref("React & Zod", 2)).toBe("/?q=React+%26+Zod&page=2");
+    expect(articlesHref("React & Zod", 2)).toBe("/articles?q=React+%26+Zod&page=2");
   });
 });
 

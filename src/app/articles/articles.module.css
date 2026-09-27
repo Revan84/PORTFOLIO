@@ -1,0 +1,10 @@
+.title {
+  font-size: clamp(40px, 6vw, 72px);
+  letter-spacing: -0.03em;
+  margin: 12px 0 32px;
+}
+
+.empty {
+  margin-top: 32px;
+  color: var(--color-neutral-400);
+}

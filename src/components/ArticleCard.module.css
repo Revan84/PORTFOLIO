@@ -1,0 +1,21 @@
+.card {
+  height: 100%;
+}
+
+.title {
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.excerpt {
+  flex: 1;
+  font-size: 14px;
+  color: var(--color-neutral-300);
+}
+
+.link {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-decoration: none;
+}

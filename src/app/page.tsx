@@ -1,29 +1,15 @@
-import { redirect } from "next/navigation";
-import { ArticleList } from "../components/ArticleList";
-import { Pagination } from "../components/Pagination";
-import { SearchForm } from "../components/SearchForm";
-import { fetchArticles } from "../services/articles";
-import { articlesHref, countPages } from "../services/pagination";
-import { articlesSearchSchema } from "../types/search";
-
-export default async function HomePage(props: PageProps<"/">) {
-  const { q, page } = articlesSearchSchema.parse(await props.searchParams);
-  const { articles, total } = await fetchArticles(q, page);
-  const pageCount = countPages(total);
-  if (page > pageCount) redirect(articlesHref(q, pageCount));
-
+// Temporary home: the mockup sections land here in step 2.
+export default function HomePage() {
   return (
-    <>
-      <h1>Articles</h1>
-      <SearchForm query={q} />
-      {articles.length === 0 ? (
-        <p>Aucun article ne correspond à la recherche.</p>
-      ) : (
-        <>
-          <ArticleList articles={articles} />
-          <Pagination query={q} page={page} pageCount={pageCount} />
-        </>
-      )}
-    </>
+    <div className="container">
+      <p className="section-label">
+        ~/portfolio <span>$ whoami</span>
+      </p>
+      <h1>Quentin Euillot</h1>
+      <p className="text-muted">
+        I build web and mobile products end to end: the interface, the API, and the servers
+        underneath. Former avionics technician, now full-stack.
+      </p>
+    </div>
   );
 }

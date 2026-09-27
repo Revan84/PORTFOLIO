@@ -1,0 +1,32 @@
+.footer {
+  border-top: 1px solid var(--color-neutral-800);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-neutral-400);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 32px;
+  padding-block: 16px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-accent-300);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.copyright {
+  margin-left: auto;
+}

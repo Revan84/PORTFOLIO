@@ -2,27 +2,30 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import styles from "./SiteNav.module.css";
 
 const LINKS = [
-  { href: "/", label: "Articles" },
-  { href: "/projects", label: "Projets" },
-  { href: "/about", label: "À propos" },
+  { href: "/#work", label: "work" },
+  { href: "/#experience", label: "log" },
+  { href: "/#stack", label: "stack" },
+  { href: "/#contact", label: "contact" },
+  { href: "/articles", label: "writing" },
 ];
-
-function isCurrent(pathname: string, href: string): boolean {
-  if (href === "/") return pathname === "/" || pathname.startsWith("/articles/");
-  return pathname.startsWith(href);
-}
 
 export function SiteNav() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Navigation principale">
-      <ul>
-        {LINKS.map((link) => (
+    <nav aria-label="Main" className={styles.nav}>
+      <ul className={styles.list}>
+        {LINKS.map((link, index) => (
           <li key={link.href}>
-            <Link href={link.href} aria-current={isCurrent(pathname, link.href) ? "page" : undefined}>
+            <Link
+              href={link.href}
+              className={styles.link}
+              aria-current={pathname.startsWith(link.href) ? "page" : undefined}
+            >
+              <span className={styles.index}>{String(index + 1).padStart(2, "0")}</span>{" "}
               {link.label}
             </Link>
           </li>

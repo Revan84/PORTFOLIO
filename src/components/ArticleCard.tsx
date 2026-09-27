@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ArticlePreview } from "../types/article";
+import styles from "./ArticleCard.module.css";
 import { ArticleCover } from "./ArticleCover";
 
 interface ArticleCardProps {
@@ -8,15 +9,16 @@ interface ArticleCardProps {
 
 export function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <article>
+    <article className={`card ${styles.card}`}>
       <ArticleCover url={article.cover_url} alt={article.cover_alt} />
-      <h2>{article.title}</h2>
-      <p>{article.excerpt}</p>
+      <h2 className={styles.title}>{article.title}</h2>
+      <p className={styles.excerpt}>{article.excerpt}</p>
       <Link
         href={`/articles/${encodeURIComponent(article.slug)}`}
-        aria-label={`Lire l'article : ${article.title}`}
+        className={styles.link}
+        aria-label={`Read the article: ${article.title}`}
       >
-        Lire l&apos;article
+        read →
       </Link>
     </article>
   );

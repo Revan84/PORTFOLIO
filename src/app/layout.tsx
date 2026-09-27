@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { SiteNav } from "../components/SiteNav";
+import { SiteFooter } from "../components/SiteFooter";
+import { SiteHeader } from "../components/SiteHeader";
+import { inter, jetbrainsMono, martianMono } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Portfolio", template: "%s · Portfolio" },
-  description: "Articles, projets et parcours d'un développeur full-stack.",
+  title: { default: "Quentin Euillot · Full-stack developer", template: "%s · Quentin Euillot" },
+  description:
+    "I build web and mobile products end to end: the interface, the API, and the servers underneath.",
   icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr">
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable} ${martianMono.variable}`}
+    >
       <body>
-        <div className="site">
-          <header>
-            <p>
-              <Link href="/">Portfolio</Link>
-            </p>
-            <SiteNav />
-          </header>
-          <main>{children}</main>
-        </div>
+        <SiteHeader />
+        <main className="page">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );

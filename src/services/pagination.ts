@@ -17,5 +17,5 @@ export function articlesHref(query: string, page: number): string {
   if (query !== "") params.set("q", query);
   if (page > 1) params.set("page", String(page));
   const search = params.toString();
-  return search === "" ? "/" : `/?${search}`;
+  return search === "" ? "/articles" : `/articles?${search}`;
 }

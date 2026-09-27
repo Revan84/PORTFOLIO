@@ -9,12 +9,19 @@ interface ErrorPageProps {
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
-    <>
+    <div className="container">
+      <p className="section-label">
+        error <span>/request-failed</span>
+      </p>
       <p role="alert">{error.message}</p>
-      <button type="button" onClick={reset}>
-        Réessayer
-      </button>
-      <Link href="/">Retour à la première page</Link>
-    </>
+      <p>
+        <button type="button" className="btn btn-primary" onClick={reset}>
+          Try again
+        </button>{" "}
+        <Link href="/" className="btn btn-secondary">
+          Back home
+        </Link>
+      </p>
+    </div>
   );
 }

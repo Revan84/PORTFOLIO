@@ -1,0 +1,12 @@
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.status {
+  color: var(--color-neutral-400);
+}
