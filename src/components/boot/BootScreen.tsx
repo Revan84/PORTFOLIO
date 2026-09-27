@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { revealScreen } from "../transition/matrix";
 import { BOOT_STORAGE_KEY, BOOTED_EVENT, isBooting } from "./bootFlag";
 import styles from "./BootScreen.module.css";
 
 const TICK_MS = 45;
-const EXIT_MS = 950;
+// If the reveal cannot run (a tab that is not painting), leave the boot screen anyway.
+const EXIT_FALLBACK_MS = 2500;
 const BAR_CELLS = 25;
 
 export interface BootLine {
@@ -21,11 +23,13 @@ interface BootScreenProps {
 
 type Phase = "loading" | "exit" | "done";
 
-// "booting quentin.os": a counter runs to 100 %, the boot log prints, then the screen
-// wipes upwards. Shown once per session; a click or a key press skips it.
+// "booting quentin.os": a counter runs to 100 %, the boot log prints, then the site is
+// revealed through the same matrix rain as the page transitions. Shown once per session;
+// a click or a key press skips it.
 export function BootScreen({ lines }: BootScreenProps) {
   const [percent, setPercent] = useState(0);
   const [phase, setPhase] = useState<Phase>("loading");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Count up with an easing step: fast at first, slower near 100.
   useEffect(() => {
@@ -47,10 +51,15 @@ export function BootScreen({ lines }: BootScreenProps) {
 
   useEffect(() => {
     if (phase !== "exit") return;
-    // The page shows through the wipe: let the effects waiting for the boot start now.
+    // The page shows through the rain: let the effects waiting for the boot start now.
     window.dispatchEvent(new Event(BOOTED_EVENT));
-    const timer = setTimeout(() => setPhase("done"), EXIT_MS);
-    return () => clearTimeout(timer);
+    const finish = () => setPhase("done");
+    const fallback = setTimeout(finish, EXIT_FALLBACK_MS);
+    const canvas = canvasRef.current;
+    // The canvas stays active until the whole screen is gone, or the boot UI would flash back.
+    if (canvas) void revealScreen(canvas, { keepActive: true }).then(finish);
+    else finish();
+    return () => clearTimeout(fallback);
   }, [phase]);
 
   useEffect(() => {
@@ -79,9 +88,10 @@ export function BootScreen({ lines }: BootScreenProps) {
 
   return (
     <div
-      className={`${styles.screen} ${phase === "exit" ? styles.exit : ""} ${phase === "done" ? styles.done : ""}`}
+      className={`${styles.screen} ${phase === "done" ? styles.done : ""}`}
       aria-hidden="true"
     >
+      <canvas ref={canvasRef} className={styles.matrix} />
       <div className={styles.glow} />
       <div className={styles.inner}>
         <div className={styles.top}>

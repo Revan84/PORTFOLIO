@@ -68,7 +68,16 @@ export function coverScreen(canvas: HTMLCanvasElement): Promise<void> {
   });
 }
 
-export function revealScreen(canvas: HTMLCanvasElement): Promise<void> {
+interface RevealOptions {
+  // Leave the (now transparent) canvas active when done, for a caller that removes it
+  // together with its own screen, so nothing shows in between.
+  keepActive?: boolean;
+}
+
+export function revealScreen(
+  canvas: HTMLCanvasElement,
+  { keepActive = false }: RevealOptions = {},
+): Promise<void> {
   return new Promise((resolve) => {
     const prepared = prepare(canvas);
     if (!prepared) return resolve();
@@ -82,6 +91,9 @@ export function revealScreen(canvas: HTMLCanvasElement): Promise<void> {
 
     context.font = palette.font;
     context.textBaseline = "top";
+    // Cover the screen right away, so whatever this canvas replaces never leaves a gap.
+    context.fillStyle = palette.background;
+    context.fillRect(0, 0, width, height);
 
     const frame = (now: number) => {
       const elapsed = (now - start) / 1000;
@@ -121,7 +133,7 @@ export function revealScreen(canvas: HTMLCanvasElement): Promise<void> {
         requestAnimationFrame(frame);
       } else {
         context.clearRect(0, 0, width, height);
-        delete canvas.dataset.active;
+        if (!keepActive) delete canvas.dataset.active;
         resolve();
       }
     };

@@ -7,8 +7,6 @@
   overflow: hidden;
   color: var(--color-text);
   background: var(--color-bg);
-  clip-path: inset(0 0 0 0);
-  transition: clip-path 0.95s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @keyframes give-up {
@@ -23,11 +21,33 @@
   animation: give-up 0s 8s forwards;
 }
 
-.screen.exit {
-  clip-path: inset(0 0 100% 0);
+/* The exit: the matrix canvas covers the screen, then everything else goes at once.
+   Both changes land in the same frame, so the site never flashes through. */
+.matrix {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
 }
 
-.screen.done {
+.matrix[data-active="true"] {
+  display: block;
+}
+
+.screen:has(.matrix[data-active="true"]) {
+  background: transparent;
+}
+
+.screen:has(.matrix[data-active="true"]) > :not(.matrix) {
+  visibility: hidden;
+}
+
+/* Must beat the data-boot rule above: that mark is removed only after the next paint. */
+.screen.done,
+:global(html[data-boot="pending"]) .screen.done {
   display: none;
 }
 
