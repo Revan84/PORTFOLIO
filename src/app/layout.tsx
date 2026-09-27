@@ -4,6 +4,7 @@ import { BootScreen, type BootLine } from "../components/boot/BootScreen";
 import { CustomCursor } from "../components/CustomCursor";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
+import { MatrixTransition } from "../components/transition/MatrixTransition";
 import { site } from "../content/site";
 import { inter, jetbrainsMono, martianMono } from "./fonts";
 import "./globals.css";
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <MatrixTransition />
         <CustomCursor />
       </body>
     </html>

@@ -1,0 +1,14 @@
+/* Above the page and the boot screen, below the custom cursor. Shown only while it draws. */
+.canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.canvas[data-active="true"] {
+  display: block;
+}
