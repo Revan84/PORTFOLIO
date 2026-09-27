@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { BOOT_FLAG_SCRIPT } from "../components/boot/bootFlag";
 import { BootScreen, type BootLine } from "../components/boot/BootScreen";
@@ -60,6 +61,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <CustomCursor />
         {/* Vercel Web Analytics: page views and visitors, cookieless. Sends nothing outside Vercel. */}
         <Analytics />
+        {/* Vercel Speed Insights: Core Web Vitals measured on real visits. */}
+        <SpeedInsights />
       </body>
     </html>
   );
