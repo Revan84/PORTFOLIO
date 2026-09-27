@@ -4,15 +4,25 @@ import { BootScreen, type BootLine } from "../components/boot/BootScreen";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
 import { experience } from "../content/experience";
+import { site } from "../content/site";
 import { stackLayers } from "../content/stack";
 import { inter, jetbrainsMono, martianMono } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Quentin Euillot · Full-stack developer", template: "%s · Quentin Euillot" },
-  description:
-    "I build web and mobile products end to end: the interface, the API, and the servers underneath.",
-  icons: { icon: "/favicon.svg" },
+  metadataBase: new URL(site.url),
+  title: { default: site.title, template: `%s · ${site.name}` },
+  description: site.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    title: site.title,
+    description: site.description,
+    url: "/",
+    locale: "en_GB",
+  },
+  twitter: { card: "summary_large_image", title: site.title, description: site.description },
 };
 
 const bootLines: BootLine[] = [
@@ -36,9 +46,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body>
         <script>{BOOT_FLAG_SCRIPT}</script>
+        <a href="#content" className="skip-link">
+          Skip to content
+        </a>
         <BootScreen lines={bootLines} />
         <SiteHeader />
-        <main className="page">{children}</main>
+        <main id="content" className="page">
+          {children}
+        </main>
         <SiteFooter />
       </body>
     </html>

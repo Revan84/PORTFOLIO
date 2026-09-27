@@ -76,6 +76,11 @@
   font-feature-settings: "tnum" 1;
 }
 
+.cv {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
 .progress {
   position: absolute;
   left: 0;

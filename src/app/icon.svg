@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#0a0b0a"/>
+  <rect x="4.5" y="4.5" width="55" height="55" rx="8" fill="none" stroke="#4fb07f" stroke-width="3"/>
+  <text x="32" y="41" fill="#4fb07f" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="24" font-weight="600" text-anchor="middle">QE</text>
+</svg>

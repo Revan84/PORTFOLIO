@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CvLink } from "./CvLink";
 import { NavClock } from "./NavClock";
 import { ScrollProgress } from "./ScrollProgress";
 import styles from "./SiteHeader.module.css";
@@ -21,6 +22,7 @@ export function SiteHeader() {
           <span className={styles.pulse} aria-hidden="true" />
           <NavClock className={styles.clock} />
         </span>
+        <CvLink className={styles.cv} />
       </div>
       <ScrollProgress className={styles.progress} />
     </header>

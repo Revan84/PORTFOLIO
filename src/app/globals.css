@@ -167,6 +167,26 @@ img {
   white-space: nowrap;
 }
 
+/* Hidden until a keyboard user tabs to it: the first stop jumps past the header. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 60;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
 .container {
   width: 100%;
   max-width: var(--page-width);

@@ -9,6 +9,7 @@ import { ArrowIcon } from "../../../components/ArrowIcon";
 import { FactList, type Fact } from "../../../components/FactList";
 import { splitTitle, TerminalTitle } from "../../../components/TerminalTitle";
 import { caseStudies } from "../../../content/caseStudies";
+import { pageMetadata } from "../../../lib/metadata";
 import { fetchProjectBySlug, fetchProjects } from "../../../services/projects";
 import type { ProjectDetail } from "../../../types/project";
 import styles from "./case.module.css";
@@ -16,7 +17,12 @@ import styles from "./case.module.css";
 export async function generateMetadata(props: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const project = await fetchProjectBySlug(slug);
-  return project === null ? {} : { title: project.title, description: project.summary };
+  if (project === null) return {};
+  return pageMetadata({
+    title: project.title,
+    description: project.summary,
+    path: `/projects/${encodeURIComponent(project.slug)}`,
+  });
 }
 
 // Without hand-written facts, the page falls back to what the Supabase row knows.

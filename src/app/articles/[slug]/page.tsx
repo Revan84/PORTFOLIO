@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Markdown from "react-markdown";
 import { ArticleCover } from "../../../components/ArticleCover";
+import { pageMetadata } from "../../../lib/metadata";
 import { fetchArticleBySlug } from "../../../services/articles";
 import styles from "./article.module.css";
 
@@ -11,7 +12,13 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", { dateStyle: "long" });
 export async function generateMetadata(props: PageProps<"/articles/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const article = await fetchArticleBySlug(slug);
-  return article === null ? {} : { title: article.title, description: article.excerpt };
+  if (article === null) return {};
+  return pageMetadata({
+    title: article.title,
+    description: article.excerpt,
+    path: `/articles/${encodeURIComponent(article.slug)}`,
+    type: "article",
+  });
 }
 
 export default async function ArticlePage(props: PageProps<"/articles/[slug]">) {

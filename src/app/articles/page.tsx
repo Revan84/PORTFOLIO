@@ -3,12 +3,17 @@ import { redirect } from "next/navigation";
 import { ArticleList } from "../../components/ArticleList";
 import { Pagination } from "../../components/Pagination";
 import { SearchForm } from "../../components/SearchForm";
+import { pageMetadata } from "../../lib/metadata";
 import { fetchArticles } from "../../services/articles";
 import { articlesHref, countPages } from "../../services/pagination";
 import { articlesSearchSchema } from "../../types/search";
 import styles from "./articles.module.css";
 
-export const metadata: Metadata = { title: "Writing" };
+export const metadata: Metadata = pageMetadata({
+  title: "Writing",
+  description: "Notes from the build: articles on web, mobile and self-hosted projects.",
+  path: "/articles",
+});
 
 export default async function ArticlesPage(props: PageProps<"/articles">) {
   const { q, page } = articlesSearchSchema.parse(await props.searchParams);
