@@ -68,7 +68,7 @@ Les types viennent des schémas Zod de `src/types/` (`z.infer`), y compris les p
 
 | Fichier | Contenu |
 |---|---|
-| `profile.ts` | nom, rôles, présentation, faits, e-mail, liens, soft skills, réponses du terminal `ping`, lecteur de musique |
+| `profile.ts` | nom, rôles, présentation, faits, e-mail, liens, soft skills, réponses du terminal `ping` |
 | `references.ts` | les citations ; une citation `draft: true` n'est pas publiée, et la section reste masquée tant qu'elles le sont toutes |
 | `caseStudies.ts` | par slug de projet : accroche, fiche, architecture, résultats |
 | `site.ts` | domaine, titre, description, chemin du CV |

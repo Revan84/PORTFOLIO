@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { BOOT_FLAG_SCRIPT } from "../components/boot/bootFlag";
 import { BootScreen, type BootLine } from "../components/boot/BootScreen";
 import { CustomCursor } from "../components/CustomCursor";
-import { MusicPlayer } from "../components/MusicPlayer";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
-import { profile } from "../content/profile";
 import { site } from "../content/site";
 import { inter, jetbrainsMono, martianMono } from "./fonts";
 import "./globals.css";
@@ -56,7 +54,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
-        <MusicPlayer {...profile.music} />
         <CustomCursor />
       </body>
     </html>
