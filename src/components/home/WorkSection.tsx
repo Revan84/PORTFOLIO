@@ -14,7 +14,7 @@ interface WorkSectionProps {
 export function WorkSection({ projects }: WorkSectionProps) {
   return (
     <section id="work" className={section.section} aria-labelledby="work-title">
-      <div className={styles.header}>
+      <div className={styles.header} data-reveal="">
         <div className={styles.heading}>
           <SectionLabel index="01" path="work" />
           <h2 id="work-title" className={styles.title}>
@@ -29,7 +29,7 @@ export function WorkSection({ projects }: WorkSectionProps) {
       ) : (
         <ol className={styles.list}>
           {projects.map((project, index) => (
-            <li key={project.id}>
+            <li key={project.id} data-reveal="">
               <Link href={`/projects/${encodeURIComponent(project.slug)}`} className={styles.row}>
                 <span className={styles.index}>/{String(index + 1).padStart(2, "0")}</span>
                 <span className={styles.text}>

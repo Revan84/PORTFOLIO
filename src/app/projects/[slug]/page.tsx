@@ -112,7 +112,12 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
       )}
 
       {sections.map((section, index) => (
-        <section key={section.label} className={styles.section} aria-label={section.label}>
+        <section
+          key={section.label}
+          className={styles.section}
+          aria-label={section.label}
+          data-reveal=""
+        >
           <span className={`section-label ${styles.sectionLabel}`}>
             [{String(index + 1).padStart(2, "0")}] <span>{section.label}</span>
           </span>

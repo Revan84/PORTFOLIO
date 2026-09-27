@@ -1,0 +1,19 @@
+.letter {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.glyph {
+  position: absolute;
+  inset: 0 0 auto;
+  text-align: center;
+  color: var(--color-accent);
+  -webkit-text-fill-color: var(--color-accent);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 60%, transparent);
+}

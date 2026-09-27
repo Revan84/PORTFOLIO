@@ -1,3 +1,4 @@
+import { ScrambleText } from "./ScrambleText";
 import styles from "./TerminalTitle.module.css";
 
 interface TerminalTitleProps {
@@ -19,11 +20,11 @@ export function TerminalTitle({ id, lead, last, tag, className }: TerminalTitleP
       </span>
       {lead !== "" && (
         <>
-          <span className={`${styles.line} ${styles.word}`}>{lead}</span>{" "}
+          <ScrambleText text={lead} delay={120} className={`${styles.line} ${styles.word}`} />{" "}
         </>
       )}
       <span className={styles.line}>
-        <span className={`${styles.word} ${styles.fade}`}>{last}</span>
+        <ScrambleText text={last} delay={420} className={`${styles.word} ${styles.fade}`} />
         <span className={`caret ${styles.caret}`} aria-hidden="true" />
         <span className={`${styles.tag} ${styles.closingTag}`} aria-hidden="true">
           {`</${tag.split(" ")[0]}>`}

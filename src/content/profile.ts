@@ -27,5 +27,13 @@ export const profile = {
     { label: "github", href: "https://github.com/Revan84" },
     { label: "linkedin", href: null },
   ],
+  // Start of the footer "uptime": the first day in production.
+  uptimeSince: "2021-09-01T09:00:00+02:00",
+  pingReplies: [
+    "PING quentin.euillot (Montpellier, FR)",
+    "reply from ellt.quentin@gmail.com  status=open-to-work",
+    "reply from github  repos=public",
+    "--- 1 host up, 0% packet loss ---",
+  ],
   marquee: ["React", "Flutter", "Symfony", "Go · Gin", "MQTT", "Next.js", "Docker", "Node · Nest"],
 } as const;

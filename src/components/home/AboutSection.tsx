@@ -1,6 +1,7 @@
 import { profile } from "../../content/profile";
 import styles from "./AboutSection.module.css";
 import section from "./Section.module.css";
+import { ScrollFill } from "./ScrollFill";
 import { SectionLabel } from "./SectionLabel";
 
 export function AboutSection() {
@@ -11,10 +12,10 @@ export function AboutSection() {
       </h2>
       <SectionLabel index="00" path="about" className={section.labelOffset} />
       <div className={styles.content}>
-        <p className={styles.statement}>{profile.about}</p>
+        <ScrollFill className={styles.statement}>{profile.about}</ScrollFill>
         <ol className={styles.milestones}>
           {profile.milestones.map((milestone) => (
-            <li key={milestone.period} className={styles.milestone}>
+            <li key={milestone.period} className={styles.milestone} data-reveal="">
               <span
                 className={`${styles.period} ${"current" in milestone ? styles.current : ""}`}
               >

@@ -22,7 +22,7 @@ export function ExperienceSection() {
       className={`${section.section} ${styles.section}`}
       aria-labelledby="experience-title"
     >
-      <div className={styles.intro}>
+      <div className={styles.intro} data-reveal="">
         <SectionLabel index="02" path="experience" />
         <h2 id="experience-title" className={styles.title}>
           Career,
@@ -36,7 +36,11 @@ export function ExperienceSection() {
 
       <ol className={styles.log}>
         {experience.map((commit) => (
-          <li key={commit.hash} className={`${styles.commit} ${styles[commit.node] ?? ""}`}>
+          <li
+            key={commit.hash}
+            className={`${styles.commit} ${styles[commit.node] ?? ""}`}
+            data-reveal=""
+          >
             <span className={styles.node} aria-hidden="true" />
             <span className={styles.meta}>
               <span>{commit.hash}</span>

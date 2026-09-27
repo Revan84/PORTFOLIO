@@ -110,6 +110,39 @@
   vertical-align: -2px;
 }
 
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.output {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reply {
+  color: var(--color-neutral-300);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  animation: line-in 0.35s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reply {
+    animation: none;
+  }
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

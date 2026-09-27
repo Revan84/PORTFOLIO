@@ -1,0 +1,24 @@
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.role {
+  display: inline-block;
+  animation: enter 0.6s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role {
+    animation: none;
+  }
+}

@@ -2,10 +2,13 @@ import { profile } from "../../content/profile";
 import { FactList } from "../FactList";
 import { TerminalTitle } from "../TerminalTitle";
 import styles from "./Hero.module.css";
+import { HeroNetwork } from "./HeroNetwork";
+import { RotatingRole } from "./RotatingRole";
 
 export function Hero() {
   return (
     <section id="top" className={styles.hero} aria-labelledby="hero-name">
+      <HeroNetwork className={styles.network} />
       <div className={styles.shade} aria-hidden="true" />
       <div className={`container ${styles.inner}`}>
         <p className={styles.prompt}>
@@ -14,7 +17,9 @@ export function Hero() {
             <span className={styles.command}>whoami</span>
             <span className={`caret ${styles.promptCaret}`} aria-hidden="true" />
           </span>
-          <span className={styles.role}>→ {profile.roles[0]}</span>
+          <span className={styles.role}>
+            → <RotatingRole roles={profile.roles} />
+          </span>
         </p>
 
         <div className={styles.bottom}>
