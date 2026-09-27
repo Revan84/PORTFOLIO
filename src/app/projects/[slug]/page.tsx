@@ -15,6 +15,15 @@ import { fetchProjectBySlug, fetchProjects } from "../../../services/projects";
 import type { ProjectDetail } from "../../../types/project";
 import styles from "./case.module.css";
 
+// Published projects are built ahead and refreshed every 5 minutes; a slug added later is
+// rendered on its first visit. Without streaming, an unknown slug answers a real 404.
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const projects = await fetchProjects();
+  return projects.map((project) => ({ slug: project.slug }));
+}
+
 export async function generateMetadata(props: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const project = await fetchProjectBySlug(slug);

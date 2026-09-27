@@ -1,19 +1,13 @@
 import type { MetadataRoute } from "next";
 import { site } from "../content/site";
-import { fetchArticles } from "../services/articles";
-import { countPages } from "../services/pagination";
+import { fetchArticleSlugs } from "../services/articles";
 import { fetchProjects } from "../services/projects";
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
 // Every published article and project, read from Supabase, plus the two list pages.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [projects, firstPage] = await Promise.all([fetchProjects(), fetchArticles("", 1)]);
-  const pageCount = countPages(firstPage.total);
-  const otherPages = await Promise.all(
-    Array.from({ length: pageCount - 1 }, (_, index) => fetchArticles("", index + 2)),
-  );
-  const articles = [firstPage, ...otherPages].flatMap((page) => page.articles);
+  const [projects, articleSlugs] = await Promise.all([fetchProjects(), fetchArticleSlugs()]);
 
   return [
     { url: site.url, changeFrequency: "monthly", priority: 1 },
@@ -23,8 +17,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.7,
     })),
-    ...articles.map((article): SitemapEntry => ({
-      url: `${site.url}/articles/${encodeURIComponent(article.slug)}`,
+    ...articleSlugs.map((slug): SitemapEntry => ({
+      url: `${site.url}/articles/${encodeURIComponent(slug)}`,
       changeFrequency: "yearly",
       priority: 0.6,
     })),

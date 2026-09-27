@@ -26,6 +26,8 @@ export const articlePreviewSchema = articleSchema.pick({
 
 export const articlePreviewListSchema = z.array(articlePreviewSchema);
 
+export const articleSlugListSchema = z.array(articleSchema.pick({ slug: true }));
+
 export type ArticlePreview = z.infer<typeof articlePreviewSchema>;
 
 export type ArticlePage = { articles: ArticlePreview[]; total: number };

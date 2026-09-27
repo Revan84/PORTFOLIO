@@ -7,6 +7,12 @@ const LABELS = ["Flutter", "Go", "MQTT", "NAS", "React", "Symfony", "Docker", "N
 const LINK_DISTANCE = 160;
 const CURSOR_REACH = 220;
 const CURSOR_PUSH = 140;
+// Beyond these, a large or dense screen costs a lot of drawing for no visible gain.
+const MAX_PIXEL_RATIO = 2;
+const MIN_NODES = 24;
+const MAX_NODES = 140;
+// Phones get a still drawing: the animation would only drain the battery.
+const ANIMATED_MEDIA = "(min-width: 761px)";
 
 interface Node {
   x: number;
@@ -54,13 +60,13 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
     let visible = true;
 
     const layout = () => {
-      const ratio = window.devicePixelRatio || 1;
+      const ratio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
       width = canvas.clientWidth;
       height = canvas.clientHeight;
       canvas.width = width * ratio;
       canvas.height = height * ratio;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const count = Math.max(24, Math.round((width * height) / 20000));
+      const count = Math.min(MAX_NODES, Math.max(MIN_NODES, Math.round((width * height) / 20000)));
       nodes = Array.from({ length: count }, (_, index) => ({
         x: width * (0.3 + Math.random() * 0.7),
         y: Math.random() * height * 0.8,
@@ -172,7 +178,7 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
     };
 
     layout();
-    if (reducedMotion) {
+    if (reducedMotion || !window.matchMedia(ANIMATED_MEDIA).matches) {
       draw();
       const resize = new ResizeObserver(() => {
         layout();

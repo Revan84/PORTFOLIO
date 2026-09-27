@@ -1,5 +1,6 @@
 import {
   articleListSchema,
+  articleSlugListSchema,
   articlePreviewListSchema,
   type Article,
   type ArticlePage,
@@ -48,6 +49,20 @@ export async function fetchArticles(
     throw new Error(`Invalid articles response: ${result.error.message}`);
   }
   return { articles: result.data, total };
+}
+
+// Every published slug, for static generation and the sitemap. RLS hides the drafts.
+export async function fetchArticleSlugs(signal?: AbortSignal): Promise<string[]> {
+  const url = restUrl("articles");
+  url.searchParams.set("select", "slug");
+  url.searchParams.set("order", "created_at.desc,id.desc");
+
+  const response = await request(url, signal);
+  const result = articleSlugListSchema.safeParse(await response.json());
+  if (!result.success) {
+    throw new Error(`Invalid article slugs response: ${result.error.message}`);
+  }
+  return result.data.map((row) => row.slug);
 }
 
 export async function fetchArticleBySlug(

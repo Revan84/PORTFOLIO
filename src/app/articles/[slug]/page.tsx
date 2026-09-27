@@ -4,10 +4,19 @@ import { notFound } from "next/navigation";
 import { ArticleCover } from "../../../components/ArticleCover";
 import { MarkdownContent } from "../../../components/MarkdownContent";
 import { pageMetadata } from "../../../lib/metadata";
-import { fetchArticleBySlug } from "../../../services/articles";
+import { fetchArticleBySlug, fetchArticleSlugs } from "../../../services/articles";
 import styles from "./article.module.css";
 
 const dateFormat = new Intl.DateTimeFormat("en-GB", { dateStyle: "long" });
+
+// Published articles are built ahead and refreshed every 5 minutes; a slug added later is
+// rendered on its first visit. Without streaming, an unknown slug answers a real 404.
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const slugs = await fetchArticleSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
 
 export async function generateMetadata(props: PageProps<"/articles/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;

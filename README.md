@@ -50,7 +50,7 @@ npm start       # sert le build de production
 | `/about`, `/projects` | redirigées vers `/#about` et `/#work` |
 | `/sitemap.xml`, `/robots.txt`, `/opengraph-image` | générés : toutes les pages publiées, et l'image des aperçus de partage |
 
-`loading.tsx` affiche l'état de chargement, `error.tsx` l'état d'erreur (`role="alert"`). La recherche est un formulaire GET (`next/form`) : elle fonctionne sans JavaScript et, comme elle n'envoie que `q`, une nouvelle recherche revient en page 1. Une page au-delà de la dernière (`/articles?page=99`) redirige vers la dernière page au lieu de laisser Supabase répondre 416.
+`error.tsx` affiche l'état d'erreur (`role="alert"`). Il n'y a volontairement pas de `loading.tsx` : il ferait envoyer les pages en streaming, et un slug inconnu répondrait alors 200 au lieu de 404. La recherche est un formulaire GET (`next/form`) : elle fonctionne sans JavaScript et, comme elle n'envoie que `q`, une nouvelle recherche revient en page 1. Une page au-delà de la dernière (`/articles?page=99`) redirige vers la dernière page au lieu de laisser Supabase répondre 416.
 
 ## Architecture
 
@@ -94,7 +94,9 @@ Chaque `fetch` vers Supabase passe `next: { revalidate: 300 }` (`src/services/ht
 - **Invalidation** : une réponse est réutilisée pendant 5 minutes, puis Next.js la redemande en arrière-plan. Le contenu change rarement et se publie depuis le tableau de bord Supabase, donc 5 minutes de retard au pire restent acceptables.
 - **Pourquoi un cache partagé est sans risque** : toutes les requêtes utilisent la même clé publishable et RLS ne renvoie que du contenu publié. La réponse est la même pour tous les visiteurs.
 
-L'accueil et le sitemap sont générés au build puis régénérés toutes les 5 minutes. `/articles` et les pages de détail dépendent de l'URL et sont rendues à la demande, avec les réponses Supabase en cache.
+L'accueil, le sitemap et les pages de détail des articles et des projets publiés (`generateStaticParams`) sont générés au build puis régénérés toutes les 5 minutes ; un article ou un projet publié plus tard est généré à sa première visite. Seule `/articles`, qui dépend de la recherche et de la page, est rendue à la demande, avec les réponses Supabase en cache.
+
+**En-têtes de sécurité** (`next.config.ts`) : `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy` et une CSP limitée à `frame-ancestors 'none'`. HSTS est ajouté par Vercel.
 
 ## Effets et accessibilité
 
