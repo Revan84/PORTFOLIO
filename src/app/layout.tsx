@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { BOOT_FLAG_SCRIPT } from "../components/boot/bootFlag";
 import { BootScreen, type BootLine } from "../components/boot/BootScreen";
@@ -57,6 +58,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteFooter />
         <MatrixTransition />
         <CustomCursor />
+        {/* Vercel Web Analytics: page views and visitors, cookieless. Sends nothing outside Vercel. */}
+        <Analytics />
       </body>
     </html>
   );

@@ -37,6 +37,7 @@ npm start       # sert le build de production
 
 - **Vercel** héberge le site : chaque push sur `main` déploie la production, chaque autre branche une préversion. Variables à définir dans le projet Vercel : `SUPABASE_URL` et `SUPABASE_PUBLISHABLE_KEY`.
 - **o2switch** garde le nom de domaine `quentin-euillot.com` : la zone DNS (cPanel > Zone Editor) pointe vers Vercel avec les enregistrements indiqués par Vercel.
+- **Vercel Web Analytics** (`<Analytics />` dans `src/app/layout.tsx`) : visiteurs et pages vues, sans cookie, consultables dans l'onglet Analytics du projet Vercel.
 - **GitHub Actions** : `.github/workflows/supabase-keepalive.yml` lit une ligne dans Supabase chaque jour, pour que le projet gratuit ne soit pas mis en pause après 7 jours d'inactivité. Secrets du dépôt à définir : `SUPABASE_URL` et `SUPABASE_PUBLISHABLE_KEY`.
 
 ## Routes
