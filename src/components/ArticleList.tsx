@@ -3,15 +3,14 @@ import { ArticleCard } from "./ArticleCard";
 
 interface ArticleListProps {
   articles: ArticlePreview[];
-  onSelect: (slug: string) => void;
 }
 
-export function ArticleList({ articles, onSelect }: ArticleListProps) {
+export function ArticleList({ articles }: ArticleListProps) {
   return (
     <ul>
       {articles.map((article) => (
         <li key={article.id}>
-          <ArticleCard article={article} onSelect={onSelect} />
+          <ArticleCard article={article} />
         </li>
       ))}
     </ul>

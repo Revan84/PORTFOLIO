@@ -2,8 +2,8 @@ import { beforeEach, expect, it, vi } from "vitest";
 
 beforeEach(() => {
   vi.resetModules();
-  vi.stubEnv("VITE_SUPABASE_URL", "https://example.supabase.co");
-  vi.stubEnv("VITE_SUPABASE_PUBLISHABLE_KEY", "sb_publishable_test");
+  vi.stubEnv("SUPABASE_URL", "https://example.supabase.co");
+  vi.stubEnv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_test");
 });
 
 it("encodes the search and computes the offset", async () => {

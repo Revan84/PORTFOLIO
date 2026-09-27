@@ -1,29 +1,30 @@
-export type View = "articles" | "projects" | "about";
+"use client";
 
-const LINKS: { view: View; label: string }[] = [
-  { view: "articles", label: "Articles" },
-  { view: "projects", label: "Projets" },
-  { view: "about", label: "À propos" },
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const LINKS = [
+  { href: "/", label: "Articles" },
+  { href: "/projects", label: "Projets" },
+  { href: "/about", label: "À propos" },
 ];
 
-interface SiteNavProps {
-  current: View;
-  onNavigate: (view: View) => void;
+function isCurrent(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/" || pathname.startsWith("/articles/");
+  return pathname.startsWith(href);
 }
 
-export function SiteNav({ current, onNavigate }: SiteNavProps) {
+export function SiteNav() {
+  const pathname = usePathname();
+
   return (
     <nav aria-label="Navigation principale">
       <ul>
         {LINKS.map((link) => (
-          <li key={link.view}>
-            <button
-              type="button"
-              aria-current={link.view === current ? "page" : undefined}
-              onClick={() => onNavigate(link.view)}
-            >
+          <li key={link.href}>
+            <Link href={link.href} aria-current={isCurrent(pathname, link.href) ? "page" : undefined}>
               {link.label}
-            </button>
+            </Link>
           </li>
         ))}
       </ul>

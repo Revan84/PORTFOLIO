@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { countPages, readTotal } from "./pagination";
+import { articlesHref, countPages, readTotal } from "./pagination";
+
+describe("articlesHref", () => {
+  it("keeps the home URL clean on the first page", () => {
+    expect(articlesHref("", 1)).toBe("/");
+  });
+
+  it("encodes the search and the page", () => {
+    expect(articlesHref("React & Zod", 2)).toBe("/?q=React+%26+Zod&page=2");
+  });
+});
 
 describe("readTotal", () => {
   it("reads the total after the slash", () => {

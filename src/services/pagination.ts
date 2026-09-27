@@ -11,3 +11,11 @@ export function readTotal(contentRange: string | null): number {
 export function countPages(total: number): number {
   return Math.max(1, Math.ceil(total / PAGE_SIZE));
 }
+
+export function articlesHref(query: string, page: number): string {
+  const params = new URLSearchParams();
+  if (query !== "") params.set("q", query);
+  if (page > 1) params.set("page", String(page));
+  const search = params.toString();
+  return search === "" ? "/" : `/?${search}`;
+}

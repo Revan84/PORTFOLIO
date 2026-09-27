@@ -1,28 +1,16 @@
-import { useId, useState, type FormEvent } from "react";
+import Form from "next/form";
 
 interface SearchFormProps {
-  onSearch: (query: string) => void;
+  query: string;
 }
 
-export function SearchForm({ onSearch }: SearchFormProps) {
-  const [text, setText] = useState("");
-  const inputId = useId();
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    onSearch(text);
-  }
-
+// A GET form: submitting navigates to /?q=... and drops the page, so a new search starts on page 1.
+export function SearchForm({ query }: SearchFormProps) {
   return (
-    <form role="search" onSubmit={handleSubmit}>
-      <label htmlFor={inputId}>Rechercher un article</label>
-      <input
-        id={inputId}
-        type="search"
-        value={text}
-        onChange={(event) => setText(event.target.value)}
-      />
+    <Form action="/" role="search">
+      <label htmlFor="search-query">Rechercher un article</label>
+      <input key={query} id="search-query" type="search" name="q" defaultValue={query} />
       <button type="submit">Rechercher</button>
-    </form>
+    </Form>
   );
 }

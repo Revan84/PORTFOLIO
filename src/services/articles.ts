@@ -31,15 +31,23 @@ export async function fetchArticles(
   page: number,
   signal?: AbortSignal,
 ): Promise<ArticlePage> {
-  const response = await request(buildArticlesUrl(query, page), signal, {
-    Prefer: "count=exact",
-  });
+  // 416: the offset is past the last article. Supabase still sends the total (*/9).
+  const response = await request(
+    buildArticlesUrl(query, page),
+    signal,
+    { Prefer: "count=exact" },
+    [416],
+  );
+  const total = readTotal(response.headers.get("Content-Range"));
+  if (response.status === 416) {
+    return { articles: [], total };
+  }
 
   const result = articlePreviewListSchema.safeParse(await response.json());
   if (!result.success) {
     throw new Error(`Invalid articles response: ${result.error.message}`);
   }
-  return { articles: result.data, total: readTotal(response.headers.get("Content-Range")) };
+  return { articles: result.data, total };
 }
 
 export async function fetchArticleBySlug(

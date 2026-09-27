@@ -1,25 +1,28 @@
+import Link from "next/link";
+import { articlesHref } from "../services/pagination";
+
 interface PaginationProps {
+  query: string;
   page: number;
   pageCount: number;
-  onPageChange: (page: number) => void;
 }
 
-export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
+export function Pagination({ query, page, pageCount }: PaginationProps) {
   return (
     <nav aria-label="Pagination">
-      <button type="button" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
-        Page précédente
-      </button>
+      {page > 1 ? (
+        <Link href={articlesHref(query, page - 1)}>Page précédente</Link>
+      ) : (
+        <span aria-disabled="true">Page précédente</span>
+      )}
       <span>
         Page {page} sur {pageCount}
       </span>
-      <button
-        type="button"
-        disabled={page >= pageCount}
-        onClick={() => onPageChange(page + 1)}
-      >
-        Page suivante
-      </button>
+      {page < pageCount ? (
+        <Link href={articlesHref(query, page + 1)}>Page suivante</Link>
+      ) : (
+        <span aria-disabled="true">Page suivante</span>
+      )}
     </nav>
   );
 }
