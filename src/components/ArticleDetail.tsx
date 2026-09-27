@@ -19,15 +19,15 @@ export function ArticleDetail({ slug, onClose }: ArticleDetailProps) {
       </button>
       {state.status === "loading" && <p role="status">Chargement de l'article...</p>}
       {state.status === "error" && <p role="alert">{state.message}</p>}
-      {state.status === "success" && state.article === null && <p>Article introuvable.</p>}
-      {state.status === "success" && state.article !== null && (
+      {state.status === "success" && state.data === null && <p>Article introuvable.</p>}
+      {state.status === "success" && state.data !== null && (
         <article>
-          <ArticleCover url={state.article.cover_url} alt={state.article.cover_alt} />
-          <h2>{state.article.title}</h2>
-          <time dateTime={state.article.published_at}>
-            {dateFormat.format(new Date(state.article.published_at))}
+          <ArticleCover url={state.data.cover_url} alt={state.data.cover_alt} />
+          <h2>{state.data.title}</h2>
+          <time dateTime={state.data.published_at}>
+            {dateFormat.format(new Date(state.data.published_at))}
           </time>
-          <Markdown>{state.article.content ?? state.article.excerpt}</Markdown>
+          <Markdown>{state.data.content ?? state.data.excerpt}</Markdown>
         </article>
       )}
     </section>

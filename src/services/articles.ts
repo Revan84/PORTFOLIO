@@ -4,23 +4,12 @@ import {
   type Article,
   type ArticlePage,
 } from "../types/article";
+import { request } from "./http";
 import { PAGE_SIZE, readTotal } from "./pagination";
-import { apiHeaders, restUrl } from "./supabase";
+import { restUrl } from "./supabase";
 
 const PREVIEW_COLUMNS = "id,title,slug,excerpt,cover_url,cover_alt";
 const ARTICLE_COLUMNS = `${PREVIEW_COLUMNS},content,published_at`;
-
-async function request(
-  url: URL,
-  signal?: AbortSignal,
-  headers: Record<string, string> = {},
-): Promise<Response> {
-  const response = await fetch(url, { headers: { ...apiHeaders, ...headers }, signal });
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
-  return response;
-}
 
 export function buildArticlesUrl(query: string, page: number): URL {
   const url = restUrl("articles");
