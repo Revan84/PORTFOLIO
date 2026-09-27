@@ -27,3 +27,5 @@ export const articlePreviewSchema = articleSchema.pick({
 export const articlePreviewListSchema = z.array(articlePreviewSchema);
 
 export type ArticlePreview = z.infer<typeof articlePreviewSchema>;
+
+export type ArticlePage = { articles: ArticlePreview[]; total: number };

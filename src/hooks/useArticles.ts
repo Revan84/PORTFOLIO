@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { fetchArticles } from "../services/articles";
-import type { ArticlePreview } from "../types/article";
+import type { ArticlePage } from "../types/article";
 
 type Settled =
   | { status: "error"; message: string }
-  | { status: "success"; articles: ArticlePreview[] };
+  | ({ status: "success" } & ArticlePage);
 export type ArticlesState = { status: "loading" } | Settled;
 
-export function useArticles(query: string): ArticlesState {
-  const [result, setResult] = useState<{ query: string; state: Settled } | null>(null);
+export function useArticles(query: string, page: number): ArticlesState {
+  const key = `${query}|${page}`;
+  const [result, setResult] = useState<{ key: string; state: Settled } | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchArticles(query, controller.signal)
-      .then((articles): Settled => ({ status: "success", articles }))
+    fetchArticles(query, page, controller.signal)
+      .then((articlePage): Settled => ({ status: "success", ...articlePage }))
       .catch((error: unknown): Settled => ({
         status: "error",
         message: error instanceof Error ? error.message : "Unknown error",
       }))
       .then((state) => {
-        if (!controller.signal.aborted) setResult({ query, state });
+        if (!controller.signal.aborted) setResult({ key: `${query}|${page}`, state });
       });
     return () => controller.abort();
-  }, [query]);
+  }, [query, page]);
 
-  return result?.query === query ? result.state : { status: "loading" };
+  return result?.key === key ? result.state : { status: "loading" };
 }
