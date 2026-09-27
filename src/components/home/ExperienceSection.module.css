@@ -1,0 +1,212 @@
+.section {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 40px;
+}
+
+.intro {
+  position: sticky;
+  top: 110px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(44px, 4.6vw, 68px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.command {
+  align-self: flex-start;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-neutral-400);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.command span {
+  color: var(--color-accent);
+}
+
+.log {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The main branch line, fading at both ends. */
+.log::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-accent-700) 48px,
+    var(--color-accent-700) calc(100% - 48px),
+    transparent
+  );
+}
+
+.commit {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 88px minmax(0, 1fr);
+  gap: 20px;
+  padding: 26px 16px 26px 0;
+  border-radius: var(--radius-md);
+  transition: background 0.3s;
+}
+
+.commit:hover {
+  background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+}
+
+.node {
+  position: absolute;
+  left: 10px;
+  top: 32px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent);
+}
+
+.head .node {
+  left: 9px;
+  top: 31px;
+  width: 13px;
+  height: 13px;
+  border: 0;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+}
+
+.root .node {
+  border: 0;
+  background: var(--color-neutral-700);
+}
+
+/* A side branch: a short link off the main line, then its own dashed line. */
+.branch .node {
+  left: 35px;
+  border-color: var(--color-accent-400);
+}
+
+.branch::before,
+.branch::after {
+  content: "";
+  position: absolute;
+}
+
+.branch::before {
+  left: 16px;
+  top: 37px;
+  width: 24px;
+  height: 1px;
+  background: var(--color-accent-700);
+}
+
+.branch::after {
+  left: 40px;
+  top: 12px;
+  bottom: 12px;
+  border-left: 1px dashed var(--color-accent-700);
+}
+
+.meta {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-accent-300);
+}
+
+.root .meta {
+  color: var(--color-neutral-500);
+}
+
+.period {
+  font-size: 12px;
+  color: var(--color-neutral-400);
+}
+
+.body {
+  grid-column: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.commitTitle {
+  margin: 0;
+  font-size: 22px;
+}
+
+.ref {
+  font-family: var(--font-mono);
+}
+
+.organization {
+  font-size: 14px;
+  color: var(--color-accent-300);
+}
+
+.text {
+  max-width: 58ch;
+  margin: 4px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--color-text) 72%, transparent);
+}
+
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .intro {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .commit {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px 12px;
+  }
+
+  .meta {
+    grid-column: 2;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .body {
+    grid-column: 2;
+  }
+}

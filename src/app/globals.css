@@ -315,6 +315,26 @@ img {
   color: var(--color-accent-300);
 }
 
+/* — terminal caret — */
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  display: inline-block;
+  background: var(--color-accent);
+  animation: blink 1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}
+
 /* — rule that fades at both ends — */
 
 .hr {

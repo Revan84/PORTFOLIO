@@ -8,5 +8,9 @@ export const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
 });
 
-// Display face for the hero name only.
-export const martianMono = Martian_Mono({ subsets: ["latin"], variable: "--font-martian" });
+// Display face for the hero name only; the mockup narrows it with the width axis.
+export const martianMono = Martian_Mono({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  variable: "--font-martian",
+});

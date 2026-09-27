@@ -1,0 +1,4 @@
+/* The home page runs edge to edge: the hero and the marquee ignore the layout padding. */
+.home {
+  margin-block: -48px -80px;
+}

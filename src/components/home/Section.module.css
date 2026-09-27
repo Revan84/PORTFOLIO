@@ -1,0 +1,44 @@
+/* Shared layout for the home sections: a mono label column, then the content. */
+
+.section {
+  padding-block: 40px 140px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 40px;
+}
+
+.labelOffset {
+  padding-top: 14px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 48px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(44px, 5vw, 76px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+@media (max-width: 760px) {
+  .section {
+    padding-block: 32px 88px;
+  }
+
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .labelOffset {
+    padding-top: 0;
+  }
+}

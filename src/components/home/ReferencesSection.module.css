@@ -1,0 +1,29 @@
+.quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin: 0;
+}
+
+.quote {
+  max-width: 26ch;
+  margin: 0;
+  font-size: clamp(28px, 3.2vw, 44px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-indent: -0.45em;
+}
+
+.caption {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-neutral-400);
+}
