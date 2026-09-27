@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import type { Locale } from "../../i18n/locales";
 import { ExternalLink } from "../ExternalLink";
 import styles from "./ContactSection.module.css";
 
@@ -10,10 +11,11 @@ const LINE_DELAY_MS = 420;
 interface PingTerminalProps {
   replies: readonly string[];
   links: { label: string; href: string }[];
+  locale: Locale;
 }
 
 // A fake shell: "run" prints the ping replies one line at a time.
-export function PingTerminal({ replies, links }: PingTerminalProps) {
+export function PingTerminal({ replies, links, locale }: PingTerminalProps) {
   const [shown, setShown] = useState(0);
   const [run, setRun] = useState(0);
   const reducedMotion = useReducedMotion();
@@ -48,7 +50,7 @@ export function PingTerminal({ replies, links }: PingTerminalProps) {
           ▸ run
         </button>
         {links.map((link) => (
-          <ExternalLink key={link.label} href={link.href} className="btn btn-secondary">
+          <ExternalLink key={link.label} href={link.href} locale={locale} className="btn btn-secondary">
             {link.label}
           </ExternalLink>
         ))}

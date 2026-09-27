@@ -1,10 +1,17 @@
-import { profile } from "../../content/profile";
+import { profile, profileText } from "../../content/profile";
+import { getDictionary } from "../../i18n/dictionaries";
+import type { Locale } from "../../i18n/locales";
 import { ArrowIcon } from "../ArrowIcon";
 import styles from "./ContactSection.module.css";
 import { PingTerminal } from "./PingTerminal";
 import { SectionLabel } from "./SectionLabel";
 
-export function ContactSection() {
+interface ContactSectionProps {
+  locale: Locale;
+}
+
+export function ContactSection({ locale }: ContactSectionProps) {
+  const [first, second] = getDictionary(locale).contact.title;
   const links = profile.links.flatMap((link) =>
     link.href === null ? [] : [{ label: link.label, href: link.href }],
   );
@@ -14,7 +21,7 @@ export function ContactSection() {
       <div className={styles.lead} data-reveal="">
         <SectionLabel index="05" path="contact" />
         <h2 id="contact-title" className={styles.title} data-cursor="lens">
-          <span>Let&apos;s</span> <span className={styles.outline}>connect.</span>
+          <span>{first}</span> <span className={styles.outline}>{second}</span>
         </h2>
         <a href={`mailto:${profile.email}`} className={styles.email}>
           {profile.email}
@@ -29,7 +36,7 @@ export function ContactSection() {
           <span className={styles.light} />
           <span className={styles.windowTitle}>zsh — quentin@montpellier</span>
         </div>
-        <PingTerminal replies={profile.pingReplies} links={links} />
+        <PingTerminal replies={profileText[locale].pingReplies} links={links} locale={locale} />
       </div>
     </section>
   );

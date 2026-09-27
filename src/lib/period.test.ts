@@ -10,6 +10,10 @@ describe("formatPeriod", () => {
     expect(formatPeriod(2025, null)).toBe("2025—now");
   });
 
+  it("writes an ongoing period in the page's language", () => {
+    expect(formatPeriod(2025, null, "auj.")).toBe("2025—auj.");
+  });
+
   it("shows one year when it starts and ends the same year", () => {
     expect(formatPeriod(2019, 2019)).toBe("2019");
   });

@@ -1,8 +1,9 @@
 import { ImageResponse } from "next/og";
-import { profile } from "../content/profile";
-import { site } from "../content/site";
+import { profile, profileText } from "../content/profile";
+import { siteText } from "../content/site";
 
-export const alt = site.title;
+// One image for both languages: the name reads the same, the role line is in English.
+export const alt = siteText.en.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -55,7 +56,7 @@ export default function OpenGraphImage() {
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, color: "#a8e2c3" }}>
-          <span>→ {profile.roles[0]}</span>
+          <span>→ {profileText.en.roles[0]}</span>
           <span style={{ color: "#8e9590" }}>Montpellier, FR</span>
         </div>
       </div>

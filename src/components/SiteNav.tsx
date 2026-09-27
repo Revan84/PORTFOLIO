@@ -4,21 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./SiteNav.module.css";
 
-const LINKS = [
-  { href: "/#work", label: "work" },
-  { href: "/#experience", label: "log" },
-  { href: "/#stack", label: "stack" },
-  { href: "/#contact", label: "contact" },
-  { href: "/articles", label: "writing" },
-];
+interface SiteNavProps {
+  label: string;
+  links: { href: string; label: string }[];
+}
 
-export function SiteNav() {
+export function SiteNav({ label, links }: SiteNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Main" className={styles.nav}>
+    <nav aria-label={label} className={styles.nav}>
       <ul className={styles.list}>
-        {LINKS.map((link, index) => (
+        {links.map((link, index) => (
           <li key={link.href}>
             <Link
               href={link.href}

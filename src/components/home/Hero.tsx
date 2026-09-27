@@ -1,11 +1,20 @@
-import { profile } from "../../content/profile";
+import { profile, profileText } from "../../content/profile";
+import { getDictionary } from "../../i18n/dictionaries";
+import type { Locale } from "../../i18n/locales";
 import { FactList } from "../FactList";
 import { TerminalTitle } from "../TerminalTitle";
 import styles from "./Hero.module.css";
 import { HeroNetwork } from "./HeroNetwork";
 import { RotatingRole } from "./RotatingRole";
 
-export function Hero() {
+interface HeroProps {
+  locale: Locale;
+}
+
+export function Hero({ locale }: HeroProps) {
+  const text = profileText[locale];
+  const dictionary = getDictionary(locale);
+
   return (
     <section id="top" className={styles.hero} aria-labelledby="hero-name">
       <HeroNetwork className={styles.network} />
@@ -18,7 +27,7 @@ export function Hero() {
             <span className={`caret ${styles.promptCaret}`} aria-hidden="true" />
           </span>
           <span className={styles.role}>
-            → <RotatingRole roles={profile.roles} />
+            → <RotatingRole roles={text.roles} />
           </span>
         </p>
 
@@ -32,14 +41,14 @@ export function Hero() {
           />
 
           <div className={styles.details}>
-            <p className={styles.intro}>{profile.intro}</p>
-            <FactList facts={profile.facts} className={styles.facts} />
+            <p className={styles.intro}>{text.intro}</p>
+            <FactList facts={text.facts} className={styles.facts} />
             <div className={styles.actions}>
               <a href="#work" className="btn btn-primary">
-                View work
+                {dictionary.hero.viewWork}
               </a>
               <a href="#contact" className="btn btn-secondary">
-                Contact
+                {dictionary.hero.contact}
               </a>
             </div>
           </div>

@@ -3,32 +3,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import { ArchitectureDiagram } from "../../../components/ArchitectureDiagram";
-import { ArrowIcon } from "../../../components/ArrowIcon";
-import { ExternalLink } from "../../../components/ExternalLink";
-import { FactList, type Fact } from "../../../components/FactList";
-import { MarkdownContent } from "../../../components/MarkdownContent";
-import { splitTitle, TerminalTitle } from "../../../components/TerminalTitle";
-import { caseStudies } from "../../../content/caseStudies";
-import { pageMetadata } from "../../../lib/metadata";
-import { fetchProjectBySlug, fetchProjects } from "../../../services/projects";
-import type { ProjectDetail } from "../../../types/project";
+import { ArchitectureDiagram } from "../../../../components/ArchitectureDiagram";
+import { ArrowIcon } from "../../../../components/ArrowIcon";
+import { ExternalLink } from "../../../../components/ExternalLink";
+import { FactList, type Fact } from "../../../../components/FactList";
+import { MarkdownContent } from "../../../../components/MarkdownContent";
+import { splitTitle, TerminalTitle } from "../../../../components/TerminalTitle";
+import { caseStudies } from "../../../../content/caseStudies";
+import { getDictionary } from "../../../../i18n/dictionaries";
+import { isLocale, localizePath, type Locale } from "../../../../i18n/locales";
+import { pageMetadata } from "../../../../lib/metadata";
+import { fetchProjectBySlug, fetchProjects } from "../../../../services/projects";
+import type { ProjectDetail } from "../../../../types/project";
 import styles from "./case.module.css";
 
 // Published projects are built ahead and refreshed every 5 minutes; a slug added later is
 // rendered on its first visit. Without streaming, an unknown slug answers a real 404.
 export const revalidate = 300;
 
+// Built for each language of the layout; the slugs are the same in both.
 export async function generateStaticParams() {
-  const projects = await fetchProjects();
+  const projects = await fetchProjects("en");
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-export async function generateMetadata(props: PageProps<"/projects/[slug]">): Promise<Metadata> {
-  const { slug } = await props.params;
-  const project = await fetchProjectBySlug(slug);
+export async function generateMetadata(props: PageProps<"/[lang]/projects/[slug]">): Promise<Metadata> {
+  const { lang, slug } = await props.params;
+  if (!isLocale(lang)) return {};
+  const project = await fetchProjectBySlug(slug, lang);
   if (project === null) return {};
   return pageMetadata({
+    locale: lang,
     title: project.title,
     description: project.summary,
     path: `/projects/${encodeURIComponent(project.slug)}`,
@@ -42,52 +47,63 @@ function defaultFacts(project: ProjectDetail): Fact[] {
     : [{ label: "STACK", value: project.skills.map((skill) => skill.name).join(" · ") }];
 }
 
-function linkFacts(project: ProjectDetail): Fact[] {
+function linkFacts(project: ProjectDetail, locale: Locale): Fact[] {
   const facts: Fact[] = [];
   if (project.demo_url !== null) {
-    facts.push({ label: "LIVE", value: <ExternalLink href={project.demo_url}>{new URL(project.demo_url).host}</ExternalLink> });
+    facts.push({
+      label: "LIVE",
+      value: (
+        <ExternalLink href={project.demo_url} locale={locale}>
+          {new URL(project.demo_url).host}
+        </ExternalLink>
+      ),
+    });
   }
   if (project.repo_url !== null) {
     facts.push({
       label: "CODE",
       value: (
-        <ExternalLink href={project.repo_url}>{new URL(project.repo_url).pathname.slice(1)}</ExternalLink>
+        <ExternalLink href={project.repo_url} locale={locale}>
+          {new URL(project.repo_url).pathname.slice(1)}
+        </ExternalLink>
       ),
     });
   }
   return facts;
 }
 
-export default async function ProjectPage(props: PageProps<"/projects/[slug]">) {
-  const { slug } = await props.params;
-  const [project, projects] = await Promise.all([fetchProjectBySlug(slug), fetchProjects()]);
+export default async function ProjectPage(props: PageProps<"/[lang]/projects/[slug]">) {
+  const { lang, slug } = await props.params;
+  if (!isLocale(lang)) notFound();
+  const [project, projects] = await Promise.all([fetchProjectBySlug(slug, lang), fetchProjects(lang)]);
   if (project === null) notFound();
 
-  const caseStudy = caseStudies[project.slug] ?? {};
+  const text = getDictionary(lang).project;
+  const caseStudy = caseStudies[lang][project.slug] ?? {};
   const position = projects.findIndex((item) => item.slug === project.slug);
   const next = projects.length > 1 ? projects[(position + 1) % projects.length] : undefined;
-  const facts = [...(caseStudy.facts ?? defaultFacts(project)), ...linkFacts(project)];
+  const facts = [...(caseStudy.facts ?? defaultFacts(project)), ...linkFacts(project, lang)];
 
   const sections: { label: string; content: ReactNode }[] = [];
   if (project.description !== null) {
     sections.push({
-      label: "context",
+      label: text.context,
       content: (
         <div className={styles.prose}>
-          <MarkdownContent>{project.description}</MarkdownContent>
+          <MarkdownContent locale={lang}>{project.description}</MarkdownContent>
         </div>
       ),
     });
   }
   if (caseStudy.architecture) {
     sections.push({
-      label: "architecture",
+      label: text.architecture,
       content: <ArchitectureDiagram architecture={caseStudy.architecture} />,
     });
   }
   if (caseStudy.outcomes && caseStudy.outcomes.length > 0) {
     sections.push({
-      label: "outcome",
+      label: text.outcome,
       content: (
         <ol className={styles.outcomes}>
           {caseStudy.outcomes.map((outcome, index) => (
@@ -104,11 +120,11 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
   return (
     <div className="container">
       <header className={styles.intro}>
-        <Link href="/#work" className={styles.back}>
+        <Link href={localizePath(lang, "/#work")} className={styles.back}>
           cd ../work
         </Link>
         <span className="section-label">
-          /work/{String(position + 1).padStart(2, "0")} · case study
+          /work/{String(position + 1).padStart(2, "0")} · {text.caseStudy}
         </span>
         <TerminalTitle {...splitTitle(project.title)} tag='h1 class="case"' className={styles.title} />
         <div className={styles.summary}>
@@ -144,10 +160,13 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
       ))}
 
       {next && (
-        <Link href={`/projects/${encodeURIComponent(next.slug)}`} className={styles.next}>
+        <Link
+          href={localizePath(lang, `/projects/${encodeURIComponent(next.slug)}`)}
+          className={styles.next}
+        >
           <span className={styles.nextText}>
             <span className={styles.nextLabel}>
-              next → /work/{String(((position + 1) % projects.length) + 1).padStart(2, "0")}
+              {text.next} → /work/{String(((position + 1) % projects.length) + 1).padStart(2, "0")}
             </span>
             <span className={styles.nextTitle}>{next.title}</span>
           </span>

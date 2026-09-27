@@ -1,0 +1,29 @@
+.switch {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  padding-inline: 6px;
+  color: var(--color-neutral-700);
+}
+
+.current {
+  color: var(--color-accent);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-neutral-400);
+}
+
+.link:hover {
+  color: var(--color-accent);
+}

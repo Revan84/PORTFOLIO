@@ -7,10 +7,11 @@ import styles from "./StackSection.module.css";
 interface StackExplorerProps {
   layers: StackLayer[];
   softSkills: readonly string[];
+  softSkillsLabel: string;
 }
 
 // Hovering or tapping a layer in the list lifts the matching plate in the pile.
-export function StackExplorer({ layers, softSkills }: StackExplorerProps) {
+export function StackExplorer({ layers, softSkills, softSkillsLabel }: StackExplorerProps) {
   const [active, setActive] = useState(0);
 
   return (
@@ -53,7 +54,7 @@ export function StackExplorer({ layers, softSkills }: StackExplorerProps) {
           ))}
         </ol>
         <p className={styles.softSkills}>
-          <strong>Soft skills</strong> · {softSkills.join(", ")}
+          <strong>{softSkillsLabel}</strong> · {softSkills.join(", ")}
         </p>
       </div>
     </div>

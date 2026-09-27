@@ -28,11 +28,13 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  // The about text and the project list now live on the home page.
+  // The about text and the project list now live on the home page, in both languages.
   async redirects() {
     return [
       { source: "/about", destination: "/#about", permanent: false },
       { source: "/projects", destination: "/#work", permanent: false },
+      { source: "/fr/about", destination: "/fr#about", permanent: false },
+      { source: "/fr/projects", destination: "/fr#work", permanent: false },
     ];
   },
 };

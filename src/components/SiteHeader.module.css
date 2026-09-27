@@ -76,6 +76,11 @@
   font-feature-settings: "tnum" 1;
 }
 
+.language {
+  padding-left: 20px;
+  border-left: 1px solid var(--color-neutral-800);
+}
+
 .cv {
   font-family: var(--font-mono);
   font-size: 12px;

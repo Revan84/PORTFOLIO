@@ -19,6 +19,8 @@ export interface BootLine {
 
 interface BootScreenProps {
   lines: BootLine[];
+  // The roles under the progress bar, in the page's language.
+  caption: string;
 }
 
 type Phase = "loading" | "exit" | "done";
@@ -26,7 +28,7 @@ type Phase = "loading" | "exit" | "done";
 // "booting quentin.os": a counter runs to 100 %, the boot log prints, then the site is
 // revealed through the same matrix rain as the page transitions. Shown once per session;
 // a click or a key press skips it.
-export function BootScreen({ lines }: BootScreenProps) {
+export function BootScreen({ lines, caption }: BootScreenProps) {
   const [percent, setPercent] = useState(0);
   const [phase, setPhase] = useState<Phase>("loading");
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -146,7 +148,7 @@ export function BootScreen({ lines }: BootScreenProps) {
             <div className={styles.progress} style={{ width: `${percent}%` }} />
           </div>
           <div className={styles.caption}>
-            <span>Full-stack developer · Systems &amp; network architect</span>
+            <span>{caption}</span>
             <span>Montpellier, FR · 43.61°N 3.88°E</span>
           </div>
         </div>

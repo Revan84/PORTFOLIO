@@ -3,11 +3,15 @@ import { articlesHref, countPages, readTotal } from "./pagination";
 
 describe("articlesHref", () => {
   it("keeps the articles URL clean on the first page", () => {
-    expect(articlesHref("", 1)).toBe("/articles");
+    expect(articlesHref("en", "", 1)).toBe("/articles");
   });
 
   it("encodes the search and the page", () => {
-    expect(articlesHref("React & Zod", 2)).toBe("/articles?q=React+%26+Zod&page=2");
+    expect(articlesHref("en", "React & Zod", 2)).toBe("/articles?q=React+%26+Zod&page=2");
+  });
+
+  it("stays on the French pages", () => {
+    expect(articlesHref("fr", "go", 2)).toBe("/fr/articles?q=go&page=2");
   });
 });
 

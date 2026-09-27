@@ -1,14 +1,19 @@
 import Form from "next/form";
+import { getDictionary } from "../i18n/dictionaries";
+import { localizePath, type Locale } from "../i18n/locales";
 import styles from "./SearchForm.module.css";
 
 interface SearchFormProps {
   query: string;
+  locale: Locale;
 }
 
 // A GET form: submitting navigates to /articles?q=... and drops the page, so a new search starts on page 1.
-export function SearchForm({ query }: SearchFormProps) {
+export function SearchForm({ query, locale }: SearchFormProps) {
+  const text = getDictionary(locale).articles;
+
   return (
-    <Form action="/articles" role="search" className={styles.form}>
+    <Form action={localizePath(locale, "/articles")} role="search" className={styles.form}>
       <div className={styles.field}>
         <label htmlFor="search-query" className={styles.label}>
           $ grep --title
@@ -20,11 +25,11 @@ export function SearchForm({ query }: SearchFormProps) {
           type="search"
           name="q"
           defaultValue={query}
-          placeholder="Search articles"
+          placeholder={text.searchPlaceholder}
         />
       </div>
       <button type="submit" className="btn btn-primary">
-        Search
+        {text.search}
       </button>
     </Form>
   );

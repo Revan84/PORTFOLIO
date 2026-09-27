@@ -1,11 +1,12 @@
-import { profile } from "../content/profile";
-import { site } from "../content/site";
+import { profile, profileText } from "../content/profile";
+import { site, siteText } from "../content/site";
+import { locales, type Locale } from "../i18n/locales";
 
 const PERSON_ID = `${site.url}/#person`;
 
 // schema.org description of the person behind the site. `sameAs` ties the site to the same
 // person's other profiles, which is what search engines use to recognise the name.
-export function personNode() {
+export function personNode(locale: Locale) {
   return {
     "@type": "Person",
     "@id": PERSON_ID,
@@ -14,8 +15,8 @@ export function personNode() {
     familyName: profile.lastName,
     url: site.url,
     email: `mailto:${profile.email}`,
-    jobTitle: "Full-stack developer",
-    description: profile.intro,
+    jobTitle: siteText[locale].jobTitle,
+    description: profileText[locale].intro,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Montpellier",
@@ -26,17 +27,18 @@ export function personNode() {
   };
 }
 
+// One website in two languages.
 export function websiteNode() {
   return {
     "@type": "WebSite",
     "@id": `${site.url}/#website`,
     url: site.url,
     name: site.name,
-    inLanguage: "en",
+    inLanguage: [...locales],
     publisher: { "@id": PERSON_ID },
   };
 }
 
-export function homeStructuredData() {
-  return { "@context": "https://schema.org", "@graph": [personNode(), websiteNode()] };
+export function homeStructuredData(locale: Locale) {
+  return { "@context": "https://schema.org", "@graph": [personNode(locale), websiteNode()] };
 }

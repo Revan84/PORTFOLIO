@@ -1,3 +1,5 @@
+import { getDictionary } from "../../i18n/dictionaries";
+import type { Locale } from "../../i18n/locales";
 import { formatPeriod } from "../../lib/period";
 import type { Experience } from "../../types/experience";
 import { MarkdownContent } from "../MarkdownContent";
@@ -7,9 +9,13 @@ import { SectionLabel } from "./SectionLabel";
 
 interface ExperienceSectionProps {
   experiences: Experience[];
+  locale: Locale;
 }
 
-export function ExperienceSection({ experiences }: ExperienceSectionProps) {
+export function ExperienceSection({ experiences, locale }: ExperienceSectionProps) {
+  const text = getDictionary(locale).experience;
+  const [titleFirst, titleSecond] = text.title;
+
   return (
     <section
       id="experience"
@@ -19,9 +25,9 @@ export function ExperienceSection({ experiences }: ExperienceSectionProps) {
       <div className={styles.intro} data-reveal="">
         <SectionLabel index="02" path="experience" />
         <h2 id="experience-title" className={styles.title} data-cursor="lens">
-          Career,
+          {titleFirst}
           <br />
-          as a commit log
+          {titleSecond}
         </h2>
         <code className={styles.command}>
           <span>$</span> git log --graph --career
@@ -38,7 +44,9 @@ export function ExperienceSection({ experiences }: ExperienceSectionProps) {
             <span className={styles.node} aria-hidden="true" />
             <span className={styles.meta}>
               <span>{commit.hash}</span>
-              <span className={styles.period}>{formatPeriod(commit.start_year, commit.end_year)}</span>
+              <span className={styles.period}>
+                {formatPeriod(commit.start_year, commit.end_year, text.now)}
+              </span>
             </span>
             <div className={styles.body}>
               <div className={styles.titleRow}>
@@ -56,19 +64,21 @@ export function ExperienceSection({ experiences }: ExperienceSectionProps) {
                 )}
               </span>
               <div className={styles.text}>
-                <MarkdownContent>{commit.summary}</MarkdownContent>
+                <MarkdownContent locale={locale}>{commit.summary}</MarkdownContent>
               </div>
               {commit.highlights.length > 0 && (
                 <ul className={styles.highlights}>
                   {commit.highlights.map((highlight) => (
                     <li key={highlight}>
-                      <MarkdownContent inline>{highlight}</MarkdownContent>
+                      <MarkdownContent locale={locale} inline>
+                        {highlight}
+                      </MarkdownContent>
                     </li>
                   ))}
                 </ul>
               )}
               {commit.tools.length > 0 && (
-                <ul className={styles.tools} aria-label="Tools">
+                <ul className={styles.tools} aria-label={text.tools}>
                   {commit.tools.map((tool) => (
                     <li key={tool} className="tag tag-neutral">
                       {tool}
