@@ -3,10 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import Markdown from "react-markdown";
 import { ArchitectureDiagram } from "../../../components/ArchitectureDiagram";
 import { ArrowIcon } from "../../../components/ArrowIcon";
+import { ExternalLink } from "../../../components/ExternalLink";
 import { FactList, type Fact } from "../../../components/FactList";
+import { MarkdownContent } from "../../../components/MarkdownContent";
 import { splitTitle, TerminalTitle } from "../../../components/TerminalTitle";
 import { caseStudies } from "../../../content/caseStudies";
 import { pageMetadata } from "../../../lib/metadata";
@@ -35,12 +36,14 @@ function defaultFacts(project: ProjectDetail): Fact[] {
 function linkFacts(project: ProjectDetail): Fact[] {
   const facts: Fact[] = [];
   if (project.demo_url !== null) {
-    facts.push({ label: "LIVE", value: <a href={project.demo_url}>{new URL(project.demo_url).host}</a> });
+    facts.push({ label: "LIVE", value: <ExternalLink href={project.demo_url}>{new URL(project.demo_url).host}</ExternalLink> });
   }
   if (project.repo_url !== null) {
     facts.push({
       label: "CODE",
-      value: <a href={project.repo_url}>{new URL(project.repo_url).pathname.slice(1)}</a>,
+      value: (
+        <ExternalLink href={project.repo_url}>{new URL(project.repo_url).pathname.slice(1)}</ExternalLink>
+      ),
     });
   }
   return facts;
@@ -62,7 +65,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
       label: "context",
       content: (
         <div className={styles.prose}>
-          <Markdown>{project.description}</Markdown>
+          <MarkdownContent>{project.description}</MarkdownContent>
         </div>
       ),
     });

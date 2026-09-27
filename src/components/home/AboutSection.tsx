@@ -12,7 +12,7 @@ export function AboutSection() {
       </h2>
       <SectionLabel index="00" path="about" className={section.labelOffset} />
       <div className={styles.content}>
-        <ScrollFill className={styles.statement}>{profile.about}</ScrollFill>
+        <ScrollFill className={styles.statement} lens>{profile.about}</ScrollFill>
         <ol className={styles.milestones}>
           {profile.milestones.map((milestone) => (
             <li key={milestone.period} className={styles.milestone} data-reveal="">

@@ -7,11 +7,13 @@ import styles from "./ScrollFill.module.css";
 interface ScrollFillProps {
   children: ReactNode;
   className?: string;
+  // Turns the custom cursor into its lens over this text.
+  lens?: boolean;
 }
 
 // The text lights up from left to right as it scrolls through the viewport,
 // driven by the --fill custom property. Without JavaScript it stays fully lit.
-export function ScrollFill({ children, className }: ScrollFillProps) {
+export function ScrollFill({ children, className, lens = false }: ScrollFillProps) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reducedMotion = useReducedMotion();
 
@@ -41,7 +43,7 @@ export function ScrollFill({ children, className }: ScrollFillProps) {
   }, [reducedMotion]);
 
   return (
-    <p ref={ref} className={className}>
+    <p ref={ref} className={className} data-cursor={lens ? "lens" : undefined}>
       <span className={styles.fill}>{children}</span>
     </p>
   );

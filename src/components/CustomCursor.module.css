@@ -1,0 +1,100 @@
+/* The anchors carry the position (set from JavaScript); the inner shapes carry the look,
+   so size changes never fight with the translate. */
+
+.cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.cursor[data-visible="true"] {
+  opacity: 1;
+}
+
+.cursor[data-state="text"] {
+  opacity: 0;
+}
+
+.ringAnchor,
+.dotAnchor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+/* — the trailing ring — */
+
+.ring {
+  --size: 36px;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  transition:
+    width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    margin 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.25s,
+    border-color 0.25s,
+    scale 0.15s;
+}
+
+.cursor[data-state="link"] .ring {
+  --size: 54px;
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+/* Over the big titles the ring becomes a dark, see-through lens: what shows through turns
+   black and white with more contrast, while the rest of the page keeps its colors. */
+.cursor[data-state="lens"] .ring {
+  --size: 150px;
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-bg) 45%, transparent);
+  backdrop-filter: grayscale(1) contrast(1.6) brightness(0.9);
+  box-shadow:
+    inset 0 0 24px color-mix(in srgb, var(--color-bg) 80%, transparent),
+    0 0 40px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+.cursor[data-state="lens"][data-link="true"] .ring {
+  border-width: 2px;
+}
+
+.cursor[data-pressed="true"] .ring {
+  scale: 0.85;
+}
+
+/* — the diamond on the pointer — */
+
+.dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: var(--color-accent);
+  box-shadow: 0 0 10px var(--color-accent);
+  rotate: 45deg;
+  transition:
+    scale 0.2s,
+    opacity 0.2s;
+}
+
+.cursor[data-state="link"] .dot {
+  scale: 0.6;
+}
+
+.cursor[data-state="lens"] .dot {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring,
+  .dot {
+    transition: none;
+  }
+}

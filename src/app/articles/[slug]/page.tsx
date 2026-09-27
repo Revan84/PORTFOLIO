@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Markdown from "react-markdown";
 import { ArticleCover } from "../../../components/ArticleCover";
+import { MarkdownContent } from "../../../components/MarkdownContent";
 import { pageMetadata } from "../../../lib/metadata";
 import { fetchArticleBySlug } from "../../../services/articles";
 import styles from "./article.module.css";
@@ -37,7 +37,7 @@ export default async function ArticlePage(props: PageProps<"/articles/[slug]">) 
         {dateFormat.format(new Date(article.published_at))}
       </time>
       <div className={styles.content}>
-        <Markdown>{article.content ?? article.excerpt}</Markdown>
+        <MarkdownContent>{article.content ?? article.excerpt}</MarkdownContent>
       </div>
     </article>
   );

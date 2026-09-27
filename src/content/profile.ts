@@ -25,7 +25,7 @@ export const profile = {
   // A link without an href is not rendered.
   links: [
     { label: "github", href: "https://github.com/Revan84" },
-    { label: "linkedin", href: null },
+    { label: "linkedin", href: "https://www.linkedin.com/in/quentin-euillot-9b90a7167/" },
   ],
   // Start of the footer "uptime": the first day in production.
   uptimeSince: "2021-09-01T09:00:00+02:00",

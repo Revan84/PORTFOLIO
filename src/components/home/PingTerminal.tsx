@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { ExternalLink } from "../ExternalLink";
 import styles from "./ContactSection.module.css";
 
 const LINE_DELAY_MS = 420;
@@ -47,9 +48,9 @@ export function PingTerminal({ replies, links }: PingTerminalProps) {
           ▸ run
         </button>
         {links.map((link) => (
-          <a key={link.label} href={link.href} className="btn btn-secondary">
+          <ExternalLink key={link.label} href={link.href} className="btn btn-secondary">
             {link.label}
-          </a>
+          </ExternalLink>
         ))}
       </div>
     </div>

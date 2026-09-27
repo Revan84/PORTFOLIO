@@ -8,7 +8,7 @@ export function StackSection() {
     <section id="stack" className={section.section} aria-labelledby="stack-title">
       <div className={section.heading} data-reveal="">
         <SectionLabel index="03" path="stack" />
-        <h2 id="stack-title" className={section.title}>
+        <h2 id="stack-title" className={section.title} data-cursor="lens">
           The stack, top to bottom
         </h2>
       </div>

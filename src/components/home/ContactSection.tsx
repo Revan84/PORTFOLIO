@@ -13,7 +13,7 @@ export function ContactSection() {
     <section id="contact" className={styles.section} aria-labelledby="contact-title">
       <div className={styles.lead} data-reveal="">
         <SectionLabel index="05" path="contact" />
-        <h2 id="contact-title" className={styles.title}>
+        <h2 id="contact-title" className={styles.title} data-cursor="lens">
           <span>Let&apos;s</span> <span className={styles.outline}>connect.</span>
         </h2>
         <a href={`mailto:${profile.email}`} className={styles.email}>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BOOT_FLAG_SCRIPT } from "../components/boot/bootFlag";
 import { BootScreen, type BootLine } from "../components/boot/BootScreen";
+import { CustomCursor } from "../components/CustomCursor";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
 import { experience } from "../content/experience";
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <CustomCursor />
       </body>
     </html>
   );

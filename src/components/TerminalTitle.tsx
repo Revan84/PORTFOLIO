@@ -14,7 +14,7 @@ interface TerminalTitleProps {
 // An h1 dressed as source code: `<h1 class="...">`, the words, a blinking caret, `</h1>`.
 export function TerminalTitle({ id, lead, last, tag, className }: TerminalTitleProps) {
   return (
-    <h1 id={id} className={`${styles.title} ${className ?? ""}`}>
+    <h1 id={id} className={`${styles.title} ${className ?? ""}`} data-cursor="lens">
       <span className={styles.tag} aria-hidden="true">
         {`<${tag}>`}
       </span>

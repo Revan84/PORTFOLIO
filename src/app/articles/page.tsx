@@ -26,7 +26,7 @@ export default async function ArticlesPage(props: PageProps<"/articles">) {
       <p className="section-label">
         [06] <span>/writing</span>
       </p>
-      <h1 className={styles.title}>Notes from the build</h1>
+      <h1 className={styles.title} data-cursor="lens">Notes from the build</h1>
       <SearchForm query={q} />
       {articles.length === 0 ? (
         <p className={styles.empty}>No article matches this search.</p>

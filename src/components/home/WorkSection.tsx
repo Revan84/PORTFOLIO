@@ -17,7 +17,7 @@ export function WorkSection({ projects }: WorkSectionProps) {
       <div className={styles.header} data-reveal="">
         <div className={styles.heading}>
           <SectionLabel index="01" path="work" />
-          <h2 id="work-title" className={styles.title}>
+          <h2 id="work-title" className={styles.title} data-cursor="lens">
             Selected work
           </h2>
         </div>
@@ -33,7 +33,9 @@ export function WorkSection({ projects }: WorkSectionProps) {
               <Link href={`/projects/${encodeURIComponent(project.slug)}`} className={styles.row}>
                 <span className={styles.index}>/{String(index + 1).padStart(2, "0")}</span>
                 <span className={styles.text}>
-                  <span className={styles.name}>{project.title}</span>
+                  <span className={styles.name} data-cursor="lens">
+                    {project.title}
+                  </span>
                   <span className={styles.summary}>{project.summary}</span>
                 </span>
                 <span className={styles.tags}>

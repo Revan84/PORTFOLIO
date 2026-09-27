@@ -1,4 +1,5 @@
 import { experience, type RichText } from "../../content/experience";
+import { ExternalLink } from "../ExternalLink";
 import styles from "./ExperienceSection.module.css";
 import section from "./Section.module.css";
 import { SectionLabel } from "./SectionLabel";
@@ -8,9 +9,9 @@ function renderRichText(parts: RichText) {
     typeof part === "string" ? (
       part
     ) : (
-      <a key={part.href} href={part.href}>
+      <ExternalLink key={part.href} href={part.href}>
         {part.label}
-      </a>
+      </ExternalLink>
     ),
   );
 }
@@ -24,7 +25,7 @@ export function ExperienceSection() {
     >
       <div className={styles.intro} data-reveal="">
         <SectionLabel index="02" path="experience" />
-        <h2 id="experience-title" className={styles.title}>
+        <h2 id="experience-title" className={styles.title} data-cursor="lens">
           Career,
           <br />
           as a commit log
