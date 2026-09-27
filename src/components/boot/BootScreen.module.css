@@ -187,21 +187,43 @@
   color: var(--color-neutral-600);
 }
 
-.fill {
-  color: var(--color-accent);
+.cells {
+  display: inline-flex;
+  gap: 0.12em;
+  margin: 0 0.3em;
+  vertical-align: -0.12em;
 }
 
-.empty {
-  color: var(--color-neutral-800);
+.cellOn,
+.cellOff {
+  width: 0.5em;
+  height: 1em;
 }
 
+.cellOn {
+  background: var(--color-accent);
+}
+
+/* The light-shade look of the ░ it replaces. */
+.cellOff {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-neutral-800) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+/* A fixed height for the six boot lines: a log that grew as lines were printed pushed
+   the counter around (layout shift). */
 .log {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 8px;
-  min-height: 130px;
+  height: 160px;
+  overflow: hidden;
   font-size: 12px;
+  line-height: 1.55;
 }
 
 @keyframes line-in {
@@ -261,9 +283,5 @@
   .middle {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
-  }
-
-  .log {
-    min-height: 0;
   }
 }

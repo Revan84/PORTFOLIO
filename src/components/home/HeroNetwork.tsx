@@ -13,6 +13,9 @@ const CURSOR_PUSH = 140;
 const FULL = { maxPixelRatio: 2, minNodes: 24, maxNodes: 140, frameMs: 0 };
 const COMPACT = { maxPixelRatio: 1, minNodes: 24, maxNodes: 30, frameMs: 1000 / 30 };
 const COMPACT_MEDIA = "(max-width: 760px)";
+// The animation waits for the browser to be idle after load, so it does not compete with
+// hydration for the main thread; this is the most it waits.
+const START_TIMEOUT_MS = 1500;
 // Motion is tuned for 60 frames per second; a slower loop moves further each frame.
 const BASE_FRAME_MS = 1000 / 60;
 
@@ -29,6 +32,17 @@ interface Packet {
   to: Node;
   progress: number;
   speed: number;
+}
+
+// Runs the callback once the browser is idle (at the latest after `timeout`) and returns a
+// canceller. Older Safari has no requestIdleCallback: a short timeout stands in.
+function whenIdle(callback: () => void, timeout: number): () => void {
+  if (typeof window.requestIdleCallback === "function") {
+    const id = window.requestIdleCallback(callback, { timeout });
+    return () => window.cancelIdleCallback(id);
+  }
+  const id = setTimeout(callback, timeout / 3);
+  return () => clearTimeout(id);
 }
 
 interface HeroNetworkProps {
@@ -62,6 +76,7 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
     let packets: Packet[] = [];
     let frame = 0;
     let visible = true;
+    let ready = false;
 
     const layout = () => {
       const ratio = Math.min(window.devicePixelRatio || 1, profile.maxPixelRatio);
@@ -180,7 +195,7 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
       draw();
     };
     const start = () => {
-      if (frame === 0 && visible && !document.hidden) frame = requestAnimationFrame(loop);
+      if (ready && frame === 0 && visible && !document.hidden) frame = requestAnimationFrame(loop);
     };
     const stop = () => {
       cancelAnimationFrame(frame);
@@ -220,9 +235,15 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
     area.addEventListener("pointermove", onPointerMove);
     area.addEventListener("pointerleave", onPointerLeave);
     document.addEventListener("visibilitychange", onVisibilityChange);
-    start();
+
+    const begin = () => {
+      ready = true;
+      start();
+    };
+    const cancelBegin = whenIdle(begin, START_TIMEOUT_MS);
 
     return () => {
+      cancelBegin();
       stop();
       resize.disconnect();
       onScreen.disconnect();

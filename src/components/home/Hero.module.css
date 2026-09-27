@@ -57,9 +57,12 @@
   vertical-align: -2px;
 }
 
+/* One line whatever the role: a role wrapping onto a second line on a phone pushed the
+   whole hero down every few seconds (layout shift). */
 .role {
   min-height: 30px;
-  font-size: 22px;
+  font-size: clamp(15px, 4.2vw, 22px);
+  white-space: nowrap;
   color: var(--color-accent-300);
 }
 

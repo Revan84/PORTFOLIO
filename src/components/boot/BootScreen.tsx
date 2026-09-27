@@ -118,8 +118,13 @@ export function BootScreen({ lines }: BootScreenProps) {
             </div>
             <span className={styles.bar}>
               <span className={styles.bracket}>[</span>
-              <span className={styles.fill}>{"█".repeat(filled)}</span>
-              <span className={styles.empty}>{"░".repeat(BAR_CELLS - filled)}</span>
+              {/* Drawn cells rather than █░ characters: those are missing from the mono font,
+                  and a fallback font of another width made the whole block shift (CLS). */}
+              <span className={styles.cells}>
+                {Array.from({ length: BAR_CELLS }, (_, index) => (
+                  <span key={index} className={index < filled ? styles.cellOn : styles.cellOff} />
+                ))}
+              </span>
               <span className={styles.bracket}>]</span>
               {"  "}0x{percent.toString(16).toUpperCase().padStart(2, "0")} / 0x64
             </span>
