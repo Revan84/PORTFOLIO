@@ -7,11 +7,16 @@ import { ReferencesSection } from "../components/home/ReferencesSection";
 import { StackSection } from "../components/home/StackSection";
 import { WorkSection } from "../components/home/WorkSection";
 import { profile } from "../content/profile";
+import { fetchExperiences, fetchStack } from "../services/career";
 import { fetchProjects } from "../services/projects";
 import styles from "./home.module.css";
 
 export default async function HomePage() {
-  const projects = await fetchProjects();
+  const [projects, experiences, stack] = await Promise.all([
+    fetchProjects(),
+    fetchExperiences(),
+    fetchStack(),
+  ]);
 
   return (
     <div className={styles.home}>
@@ -20,8 +25,8 @@ export default async function HomePage() {
       <div className="container">
         <AboutSection />
         <WorkSection projects={projects} />
-        <ExperienceSection />
-        <StackSection />
+        <ExperienceSection experiences={experiences} />
+        <StackSection layers={stack} />
         <ReferencesSection />
         <ContactSection />
       </div>

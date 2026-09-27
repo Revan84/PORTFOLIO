@@ -35,6 +35,7 @@ export const profile = {
     "reply from github  repos=public",
     "--- 1 host up, 0% packet loss ---",
   ],
+  softSkills: ["curious", "versatile", "autonomous", "adaptable", "team player"],
   // The bottom-left player. The track is credited to its artist.
   music: {
     title: "Further",

@@ -1,22 +1,15 @@
-import { experience, type RichText } from "../../content/experience";
-import { ExternalLink } from "../ExternalLink";
+import { formatPeriod } from "../../lib/period";
+import type { Experience } from "../../types/experience";
+import { MarkdownContent } from "../MarkdownContent";
 import styles from "./ExperienceSection.module.css";
 import section from "./Section.module.css";
 import { SectionLabel } from "./SectionLabel";
 
-function renderRichText(parts: RichText) {
-  return parts.map((part) =>
-    typeof part === "string" ? (
-      part
-    ) : (
-      <ExternalLink key={part.href} href={part.href}>
-        {part.label}
-      </ExternalLink>
-    ),
-  );
+interface ExperienceSectionProps {
+  experiences: Experience[];
 }
 
-export function ExperienceSection() {
+export function ExperienceSection({ experiences }: ExperienceSectionProps) {
   return (
     <section
       id="experience"
@@ -36,7 +29,7 @@ export function ExperienceSection() {
       </div>
 
       <ol className={styles.log}>
-        {experience.map((commit) => (
+        {experiences.map((commit) => (
           <li
             key={commit.hash}
             className={`${styles.commit} ${styles[commit.node] ?? ""}`}
@@ -45,7 +38,7 @@ export function ExperienceSection() {
             <span className={styles.node} aria-hidden="true" />
             <span className={styles.meta}>
               <span>{commit.hash}</span>
-              <span className={styles.period}>{commit.period}</span>
+              <span className={styles.period}>{formatPeriod(commit.start_year, commit.end_year)}</span>
             </span>
             <div className={styles.body}>
               <div className={styles.titleRow}>
@@ -56,8 +49,33 @@ export function ExperienceSection() {
                   {commit.ref}
                 </span>
               </div>
-              <span className={styles.organization}>{commit.organization}</span>
-              <p className={styles.text}>{renderRichText(commit.body)}</p>
+              <span className={styles.organization}>
+                {commit.organization}
+                {commit.location !== null && (
+                  <span className={styles.location}> · {commit.location}</span>
+                )}
+              </span>
+              <div className={styles.text}>
+                <MarkdownContent>{commit.summary}</MarkdownContent>
+              </div>
+              {commit.highlights.length > 0 && (
+                <ul className={styles.highlights}>
+                  {commit.highlights.map((highlight) => (
+                    <li key={highlight}>
+                      <MarkdownContent inline>{highlight}</MarkdownContent>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {commit.tools.length > 0 && (
+                <ul className={styles.tools} aria-label="Tools">
+                  {commit.tools.map((tool) => (
+                    <li key={tool} className="tag tag-neutral">
+                      {tool}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </li>
         ))}

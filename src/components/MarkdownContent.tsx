@@ -14,8 +14,18 @@ const components: Components = {
 
 interface MarkdownContentProps {
   children: string;
+  // Drops the wrapping paragraph, for a one-line text inside a list item or a sentence.
+  inline?: boolean;
 }
 
-export function MarkdownContent({ children }: MarkdownContentProps) {
-  return <Markdown components={components}>{children}</Markdown>;
+export function MarkdownContent({ children, inline = false }: MarkdownContentProps) {
+  return (
+    <Markdown
+      components={components}
+      disallowedElements={inline ? ["p"] : undefined}
+      unwrapDisallowed={inline}
+    >
+      {children}
+    </Markdown>
+  );
 }

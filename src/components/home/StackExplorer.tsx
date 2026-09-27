@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { StackLayer } from "../../content/stack";
+import type { StackLayer } from "../../types/stack";
 import styles from "./StackSection.module.css";
 
 interface StackExplorerProps {
   layers: StackLayer[];
-  softSkills: string[];
+  softSkills: readonly string[];
 }
 
 // Hovering or tapping a layer in the list lifts the matching plate in the pile.
@@ -42,9 +42,9 @@ export function StackExplorer({ layers, softSkills }: StackExplorerProps) {
               <div className={styles.layerBody}>
                 <h3 className={styles.layerName}>{layer.name}</h3>
                 <ul className={styles.tools}>
-                  {layer.tools.map((tool) => (
-                    <li key={tool} className="tag tag-neutral">
-                      {tool}
+                  {layer.skills.map((skill) => (
+                    <li key={skill.name} className="tag tag-neutral">
+                      {skill.name}
                     </li>
                   ))}
                 </ul>

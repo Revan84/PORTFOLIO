@@ -1,14 +1,13 @@
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import { site } from "../content/site";
 
 interface CvLinkProps {
   className?: string;
 }
 
-// Rendered only once public/cv.pdf exists, so the header never links to a missing file.
+// Rendered only when public/cv.pdf existed at build time (see next.config.ts), so the header
+// never links to a missing file. Adding the CV takes a new deployment.
 export function CvLink({ className }: CvLinkProps) {
-  if (!existsSync(join(process.cwd(), "public", site.cvPath))) return null;
+  if (process.env.CV_AVAILABLE !== "true") return null;
 
   return (
     <a href={site.cvPath} className={`btn btn-primary ${className ?? ""}`} download>

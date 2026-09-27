@@ -5,10 +5,8 @@ import { CustomCursor } from "../components/CustomCursor";
 import { MusicPlayer } from "../components/MusicPlayer";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
-import { experience } from "../content/experience";
 import { profile } from "../content/profile";
 import { site } from "../content/site";
-import { stackLayers } from "../content/stack";
 import { inter, jetbrainsMono, martianMono } from "./fonts";
 import "./globals.css";
 
@@ -30,8 +28,8 @@ export const metadata: Metadata = {
 
 const bootLines: BootLine[] = [
   { tag: ">", text: "booting quentin.os v2026.09", at: 0 },
-  { tag: "[ ok ]", text: `loading /experience · ${experience.length} commits`, at: 22 },
-  { tag: "[ ok ]", text: `mounting /stack · ${stackLayers.length} layers`, at: 45 },
+  { tag: "[ ok ]", text: "loading /experience · git log", at: 22 },
+  { tag: "[ ok ]", text: "mounting /stack · 6 layers", at: 45 },
   { tag: "[ ok ]", text: "connecting mqtt://montpellier", at: 68 },
   { tag: "[ ok ]", text: "compiling /work", at: 86 },
   { tag: "[ ok ]", text: "ready", at: 100 },
