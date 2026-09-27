@@ -7,12 +7,14 @@ const LABELS = ["Flutter", "Go", "MQTT", "NAS", "React", "Symfony", "Docker", "N
 const LINK_DISTANCE = 160;
 const CURSOR_REACH = 220;
 const CURSOR_PUSH = 140;
-// Beyond these, a large or dense screen costs a lot of drawing for no visible gain.
-const MAX_PIXEL_RATIO = 2;
-const MIN_NODES = 24;
-const MAX_NODES = 140;
-// Phones get a still drawing: the animation would only drain the battery.
-const ANIMATED_MEDIA = "(min-width: 761px)";
+// How much the animation may cost. A large or dense screen gains nothing visible past the
+// full profile; phones get a lighter one to spare the battery: fewer nodes, one canvas
+// pixel per CSS pixel, and 30 frames per second.
+const FULL = { maxPixelRatio: 2, minNodes: 24, maxNodes: 140, frameMs: 0 };
+const COMPACT = { maxPixelRatio: 1, minNodes: 24, maxNodes: 30, frameMs: 1000 / 30 };
+const COMPACT_MEDIA = "(max-width: 760px)";
+// Motion is tuned for 60 frames per second; a slower loop moves further each frame.
+const BASE_FRAME_MS = 1000 / 60;
 
 interface Node {
   x: number;
@@ -51,6 +53,8 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
     const labelColor = style.getPropertyValue("--color-neutral-400").trim() || "#adb3af";
     const font = `11px ${style.getPropertyValue("--font-mono").trim() || "monospace"}`;
 
+    const profile = window.matchMedia(COMPACT_MEDIA).matches ? COMPACT : FULL;
+    const step = Math.max(1, profile.frameMs / BASE_FRAME_MS);
     const pointer = { x: -999, y: -999 };
     let width = 0;
     let height = 0;
@@ -60,13 +64,16 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
     let visible = true;
 
     const layout = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+      const ratio = Math.min(window.devicePixelRatio || 1, profile.maxPixelRatio);
       width = canvas.clientWidth;
       height = canvas.clientHeight;
       canvas.width = width * ratio;
       canvas.height = height * ratio;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const count = Math.min(MAX_NODES, Math.max(MIN_NODES, Math.round((width * height) / 20000)));
+      const count = Math.min(
+        profile.maxNodes,
+        Math.max(profile.minNodes, Math.round((width * height) / 20000)),
+      );
       nodes = Array.from({ length: count }, (_, index) => ({
         x: width * (0.3 + Math.random() * 0.7),
         y: Math.random() * height * 0.8,
@@ -79,16 +86,16 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
 
     const move = () => {
       for (const node of nodes) {
-        node.x += node.vx;
-        node.y += node.vy;
+        node.x += node.vx * step;
+        node.y += node.vy * step;
         if (node.x < 0 || node.x > width) node.vx *= -1;
         if (node.y < 0 || node.y > height) node.vy *= -1;
         const dx = node.x - pointer.x;
         const dy = node.y - pointer.y;
         const distance = Math.hypot(dx, dy);
         if (distance < CURSOR_PUSH && distance > 0) {
-          node.x += (dx / distance) * 0.8;
-          node.y += (dy / distance) * 0.8;
+          node.x += (dx / distance) * 0.8 * step;
+          node.y += (dy / distance) * 0.8 * step;
         }
       }
     };
@@ -125,11 +132,11 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
         context.stroke();
       }
 
-      if (links.length > 0 && Math.random() < 0.12) {
+      if (links.length > 0 && Math.random() < 0.12 * step) {
         const [from, to] = links[Math.floor(Math.random() * links.length)];
         packets.push({ from, to, progress: 0, speed: 0.008 + Math.random() * 0.014 });
       }
-      packets = packets.filter((packet) => (packet.progress += packet.speed) < 1);
+      packets = packets.filter((packet) => (packet.progress += packet.speed * step) < 1);
       context.globalAlpha = 1;
       context.fillStyle = accent;
       context.shadowColor = accent;
@@ -164,10 +171,13 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
       context.globalAlpha = 1;
     };
 
-    const loop = () => {
+    let lastFrame = 0;
+    const loop = (now: number) => {
+      frame = requestAnimationFrame(loop);
+      if (now - lastFrame < profile.frameMs) return;
+      lastFrame = now;
       move();
       draw();
-      frame = requestAnimationFrame(loop);
     };
     const start = () => {
       if (frame === 0 && visible && !document.hidden) frame = requestAnimationFrame(loop);
@@ -178,7 +188,7 @@ export function HeroNetwork({ className }: HeroNetworkProps) {
     };
 
     layout();
-    if (reducedMotion || !window.matchMedia(ANIMATED_MEDIA).matches) {
+    if (reducedMotion) {
       draw();
       const resize = new ResizeObserver(() => {
         layout();
