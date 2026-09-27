@@ -14,17 +14,17 @@ interface TerminalTitleProps {
 // An h1 dressed as source code: `<h1 class="...">`, the words, a blinking caret, `</h1>`.
 export function TerminalTitle({ id, lead, last, tag, className }: TerminalTitleProps) {
   return (
-    <h1 id={id} className={`${styles.title} ${className ?? ""}`} data-cursor="lens">
+    <h1 id={id} className={`${styles.title} ${className ?? ""}`}>
       <span className={styles.tag} aria-hidden="true">
         {`<${tag}>`}
       </span>
       {lead !== "" && (
         <>
-          <ScrambleText text={lead} delay={120} className={`${styles.line} ${styles.word}`} />{" "}
+          <ScrambleText text={lead} delay={120} className={`${styles.line} ${styles.word}`} lens />{" "}
         </>
       )}
       <span className={styles.line}>
-        <ScrambleText text={last} delay={420} className={`${styles.word} ${styles.fade}`} />
+        <ScrambleText text={last} delay={420} className={`${styles.word} ${styles.fade}`} lens />
         <span className={`caret ${styles.caret}`} aria-hidden="true" />
         <span className={`${styles.tag} ${styles.closingTag}`} aria-hidden="true">
           {`</${tag.split(" ")[0]}>`}

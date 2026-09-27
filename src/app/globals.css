@@ -405,6 +405,11 @@ html[data-cursor="custom"] :is(input, textarea, [contenteditable="true"]) {
   cursor: text;
 }
 
+/* The lens follows the text, not the empty space a block title leaves on its right. */
+[data-cursor="lens"] {
+  width: fit-content;
+}
+
 /* — rule that fades at both ends — */
 
 .hr {

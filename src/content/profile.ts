@@ -35,5 +35,12 @@ export const profile = {
     "reply from github  repos=public",
     "--- 1 host up, 0% packet loss ---",
   ],
+  // The bottom-left player. The track is credited to its artist.
+  music: {
+    title: "Further",
+    artist: "DJ Sonnenbrand",
+    subtitle: "off-screen, I make music",
+    src: "/music/further.m4a",
+  },
   marquee: ["React", "Flutter", "Symfony", "Go · Gin", "MQTT", "Next.js", "Docker", "Node · Nest"],
 } as const;

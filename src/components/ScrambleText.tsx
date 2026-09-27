@@ -21,13 +21,15 @@ interface ScrambleTextProps {
   text: string;
   delay?: number;
   className?: string;
+  // Turns the custom cursor into its lens over the word.
+  lens?: boolean;
 }
 
 const randomGlyph = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
 // Each letter flickers through code glyphs before settling, as if the word were being decoded.
 // Hovering a letter scrambles it again. The real word stays available to assistive tech.
-export function ScrambleText({ text, delay = 0, className }: ScrambleTextProps) {
+export function ScrambleText({ text, delay = 0, className, lens = false }: ScrambleTextProps) {
   const reducedMotion = useReducedMotion();
   const letters = [...text];
   const count = letters.length;
@@ -79,7 +81,7 @@ export function ScrambleText({ text, delay = 0, className }: ScrambleTextProps) 
   };
 
   return (
-    <span className={className}>
+    <span className={className} data-cursor={lens ? "lens" : undefined}>
       <span className="visually-hidden">{text}</span>
       <span aria-hidden="true">
         {letters.map((letter, index) => {

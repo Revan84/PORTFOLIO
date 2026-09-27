@@ -17,6 +17,7 @@
 
 .line {
   display: flex;
+  width: fit-content;
   align-items: baseline;
   white-space: nowrap;
 }
