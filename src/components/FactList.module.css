@@ -1,0 +1,24 @@
+.facts {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px 18px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.fact {
+  display: contents;
+}
+
+.facts dt {
+  color: var(--color-neutral-500);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.highlight {
+  color: var(--color-accent-300);
+}

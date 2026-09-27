@@ -14,5 +14,16 @@ export const projectSchema = z.object({
 
 export const projectListSchema = z.array(projectSchema);
 
+export const projectDetailSchema = projectSchema.extend({
+  description: z.string().nullable(),
+  cover_url: z.url().nullable(),
+  cover_alt: z.string().nullable(),
+  demo_url: z.url().nullable(),
+  repo_url: z.url().nullable(),
+});
+
+export const projectDetailListSchema = z.array(projectDetailSchema);
+
 export type Skill = z.infer<typeof skillSchema>;
 export type Project = z.infer<typeof projectSchema>;
+export type ProjectDetail = z.infer<typeof projectDetailSchema>;

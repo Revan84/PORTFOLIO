@@ -1,4 +1,5 @@
 import { profile } from "../../content/profile";
+import { ArrowIcon } from "../ArrowIcon";
 import styles from "./ContactSection.module.css";
 import { SectionLabel } from "./SectionLabel";
 
@@ -14,9 +15,7 @@ export function ContactSection() {
         </h2>
         <a href={`mailto:${profile.email}`} className={styles.email}>
           {profile.email}
-          <svg width="22" height="22" viewBox="0 0 256 256" fill="var(--color-accent)" aria-hidden="true">
-            <path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z" />
-          </svg>
+          <ArrowIcon size={22} />
         </a>
       </div>
 
